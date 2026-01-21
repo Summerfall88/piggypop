@@ -65,8 +65,8 @@ const Index = () => {
           }} whileHover={{
             scale: 1.05
           }} className="inline-block mt-8">
-              <div className="bg-primary text-primary-foreground px-6 py-3 rounded-full font-bold text-lg md:text-xl tracking-wider shadow-lg">
-                GO! GO! PIGGY POP! ✦
+              <div className="px-6 py-3 font-bold text-lg md:text-xl tracking-wider shadow-lg rounded-none opacity-100 bg-inherit text-secondary-foreground">
+                ✦ GO! GO! PIGGY POP! ✦
               </div>
             </motion.div>
           </motion.div>
