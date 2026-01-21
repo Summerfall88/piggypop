@@ -79,8 +79,8 @@ const Index = () => {
           opacity: 1,
           y: 0
         }} className="flex-col gap-4 mt-12 sm:flex-col flex items-center justify-start">
-            <Link to="/music" className="btn-primary flex items-center gap-2">  СЛУШАТЬ МУЗЫКУ<Music size={20} />
-              Слушать музыку
+            <Link to="/music" className="btn-primary flex items-center gap-2">  ​<Music size={20} />
+              ​Слушать музыку
               <ArrowRight size={20} className="opacity-0" />
             </Link>
             <Link to="/merch" className="btn-outline flex items-center gap-2">
