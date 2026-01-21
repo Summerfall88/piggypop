@@ -48,24 +48,48 @@ const Index = () => {
           duration: 0.8
         }}>
             {/* Main Title */}
-            <h1 className="font-display text-7xl md:text-9xl lg:text-[12rem] leading-none tracking-tight text-center">
-              <motion.span className="block text-foreground" initial={{
-              y: 0,
-              opacity: 1
-            }} animate={{
-              y: 0,
-              opacity: 1
-            }}>
-                PIGGY
+            <h1 className="font-display text-7xl md:text-9xl lg:text-[12rem] leading-none tracking-tight text-center pt-16 md:pt-20 group cursor-pointer">
+              <motion.span 
+                className="block text-foreground transition-all duration-300 group-hover:[text-shadow:2px_2px_0_hsl(var(--primary)),-2px_-2px_0_hsl(var(--primary))] group-hover:tracking-[0.15em]"
+                whileHover={{ 
+                  x: [0, -3, 3, -3, 0],
+                  transition: { duration: 0.3 }
+                }}
+              >
+                {'PIGGY'.split('').map((letter, i) => (
+                  <motion.span 
+                    key={i} 
+                    className="inline-block group-hover:animate-pulse"
+                    style={{ 
+                      animationDelay: `${i * 0.05}s`,
+                    }}
+                    whileHover={{
+                      y: [0, -5, 3, -2, 0],
+                      rotate: [0, -5, 5, -3, 0],
+                      transition: { duration: 0.4 }
+                    }}
+                  >
+                    {letter}
+                  </motion.span>
+                ))}
               </motion.span>
-              <motion.span className="block text-primary text-shadow-glow" initial={{
-              y: 0,
-              opacity: 1
-            }} animate={{
-              y: 0,
-              opacity: 1
-            }}>
-                POP
+              <motion.span 
+                className="block text-primary text-shadow-glow transition-all duration-300 group-hover:[text-shadow:3px_3px_0_hsl(var(--foreground)),-3px_-3px_0_hsl(var(--foreground)),3px_-3px_0_hsl(var(--foreground)),-3px_3px_0_hsl(var(--foreground))] group-hover:tracking-[0.2em]"
+              >
+                {'POP'.split('').map((letter, i) => (
+                  <motion.span 
+                    key={i} 
+                    className="inline-block"
+                    whileHover={{
+                      y: [0, 5, -3, 2, 0],
+                      rotate: [0, 8, -8, 4, 0],
+                      scale: [1, 1.1, 0.95, 1.05, 1],
+                      transition: { duration: 0.5 }
+                    }}
+                  >
+                    {letter}
+                  </motion.span>
+                ))}
               </motion.span>
             </h1>
 
