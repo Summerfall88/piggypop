@@ -78,7 +78,7 @@ const Index = () => {
         }} animate={{
           opacity: 1,
           y: 0
-        }} className="flex-col gap-4 mt-12 sm:flex-col flex items-center justify-start">
+        }} className="flex-col gap-4 mt-12 sm:flex-col flex items-start justify-start">
             <Link to="/music" className="btn-primary flex items-center gap-2">  ​<Music size={20} />
               ​Слушать музыку
               <ArrowRight size={20} className="opacity-0" />
@@ -104,8 +104,8 @@ const Index = () => {
         }} transition={{
           duration: 1.5,
           repeat: Infinity
-        }} className="w-6 h-10 border-2 border-foreground/30 rounded-full flex justify-center pt-2">
-            <motion.div className="w-1.5 h-1.5 bg-primary rounded-full" />
+        }} className="w-6 h-10 border-2 border-foreground/30 rounded-full flex justify-center pt-2 opacity-5">
+            <motion.div className="w-1.5 h-1.5 bg-primary rounded-full opacity-0" />
           </motion.div>
         </motion.div>
       </section>
