@@ -33,7 +33,8 @@ export const albums: Album[] = [
       { id: '1-3', title: 'Piggy Party', duration: '4:12' },
       { id: '1-4', title: 'Night Rider', duration: '3:58' },
       { id: '1-5', title: 'Spark & Shine', duration: '3:21' },
-      { id: '1-6', title: 'Outro (Bye Bye)', duration: '2:15' },
+      { id: '1-6', title: 'PSS 126', duration: '2:30', audioUrl: '/audio/pss-126.wav' },
+      { id: '1-7', title: 'Outro (Bye Bye)', duration: '2:15' },
     ],
   },
 ];
