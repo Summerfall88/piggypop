@@ -66,7 +66,7 @@ const Index = () => {
             scale: 1.05
           }} className="inline-block mt-8">
               <div className="px-6 py-3 font-bold text-lg md:text-xl tracking-wider shadow-lg rounded-none opacity-100 bg-inherit text-secondary-foreground">
-                ✦ GO! GO! PIGGY POP! ✦
+                ✦GO! GO! PIGGY POP!✦  
               </div>
             </motion.div>
           </motion.div>
