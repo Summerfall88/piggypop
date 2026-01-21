@@ -1,8 +1,16 @@
 import { motion } from 'framer-motion';
 import { ArrowRight, Music, ShoppingBag } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { Instagram, Youtube, MessageCircle } from 'lucide-react';
 import Sparkle from '@/components/Sparkle';
 import paperTexture from '@/assets/paper-texture.jpg';
+
+const socialLinks = [
+  { icon: Instagram, href: 'https://instagram.com/piggypop', label: 'Instagram' },
+  { icon: Youtube, href: 'https://youtube.com/@piggypop', label: 'YouTube' },
+  { icon: MessageCircle, href: 'https://t.me/piggypop', label: 'Telegram' },
+];
+
 const Index = () => {
   return <div className="min-h-screen">
       {/* Hero Section */}
@@ -58,16 +66,47 @@ const Index = () => {
             {/* Slogan Badge */}
             <motion.div initial={{
             scale: 1,
-            rotate: 3
+            rotate: -2
           }} animate={{
             scale: 1,
-            rotate: 3
+            rotate: -2
           }} whileHover={{
             scale: 1.05
           }} className="inline-block mt-8">
-              <div className="px-6 py-3 font-bold text-lg md:text-xl tracking-wider shadow-lg rounded-none opacity-100 bg-inherit text-secondary-foreground">
-                ✦GO! GO! PIGGY POP!✦  
+              <div className="relative px-6 py-3">
+                <span 
+                  className="text-2xl md:text-3xl lg:text-4xl text-primary relative inline-block"
+                  style={{ 
+                    fontFamily: "'Caveat', cursive",
+                    textDecoration: 'line-through',
+                    textDecorationThickness: '3px',
+                    textDecorationColor: 'hsl(var(--foreground))',
+                    letterSpacing: '0.05em'
+                  }}
+                >
+                  GO! GO! PIGGY POP!
+                </span>
               </div>
+            </motion.div>
+
+            {/* Social Links */}
+            <motion.div 
+              initial={{ opacity: 1, y: 0 }} 
+              animate={{ opacity: 1, y: 0 }}
+              className="flex items-center justify-center gap-4 mt-8"
+            >
+              {socialLinks.map((social) => (
+                <a
+                  key={social.label}
+                  href={social.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-3 bg-secondary/80 hover:bg-primary hover:text-primary-foreground rounded-full transition-all duration-300 hover:scale-110"
+                  aria-label={social.label}
+                >
+                  <social.icon size={24} />
+                </a>
+              ))}
             </motion.div>
           </motion.div>
 
