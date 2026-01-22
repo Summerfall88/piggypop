@@ -5,6 +5,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Navigation from "./components/Navigation";
+import ScrollToTop from "./components/ScrollToTop";
 import Index from "./pages/Index";
 import Music from "./pages/Music";
 import Merch from "./pages/Merch";
@@ -24,6 +25,7 @@ const App = () => {
           <Toaster />
           <Sonner />
           <BrowserRouter>
+            <ScrollToTop />
             <Navigation onCartClick={() => setIsCartOpen(true)} />
             <Routes>
               <Route path="/" element={<Index />} />
