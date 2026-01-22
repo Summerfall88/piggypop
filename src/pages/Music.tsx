@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Play, Clock } from 'lucide-react';
-import Navigation from '@/components/Navigation';
 import AlbumCard from '@/components/AlbumCard';
 import MusicPlayer from '@/components/MusicPlayer';
 import { albums, type Track, type Album } from '@/data/albums';
@@ -26,7 +25,6 @@ const Music = () => {
 
   return (
     <div className="min-h-screen pb-24">
-      <Navigation />
       
       <main className="pt-24">
         <div className="container mx-auto px-6">
