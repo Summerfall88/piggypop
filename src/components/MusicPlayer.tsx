@@ -7,14 +7,17 @@ interface MusicPlayerProps {
   album: Album;
   currentTrack: Track | null;
   onTrackChange: (track: Track) => void;
+  autoPlay?: boolean;
 }
 
-const MusicPlayer = ({ album, currentTrack, onTrackChange }: MusicPlayerProps) => {
+const MusicPlayer = ({ album, currentTrack, onTrackChange, autoPlay = false }: MusicPlayerProps) => {
   const [isPlaying, setIsPlaying] = useState(false);
-  const [progress, setProgress] = useState(0);
+  const [currentTime, setCurrentTime] = useState(0);
+  const [duration, setDuration] = useState(0);
   const [volume, setVolume] = useState(0.7);
   const [isMuted, setIsMuted] = useState(false);
   const audioRef = useRef<HTMLAudioElement>(null);
+  const progressRef = useRef<HTMLDivElement>(null);
 
   const currentIndex = album.tracks.findIndex(t => t.id === currentTrack?.id);
 
@@ -27,7 +30,6 @@ const MusicPlayer = ({ album, currentTrack, onTrackChange }: MusicPlayerProps) =
       }
       setIsPlaying(!isPlaying);
     } else {
-      // Demo mode - just toggle state
       setIsPlaying(!isPlaying);
     }
   };
@@ -51,29 +53,73 @@ const MusicPlayer = ({ album, currentTrack, onTrackChange }: MusicPlayerProps) =
     }
   };
 
-  // Simulate progress for demo
-  useEffect(() => {
-    let interval: NodeJS.Timeout;
-    if (isPlaying && !currentTrack?.audioUrl) {
-      interval = setInterval(() => {
-        setProgress(prev => {
-          if (prev >= 100) {
-            handleNext();
-            return 0;
-          }
-          return prev + 0.5;
-        });
-      }, 100);
-    }
-    return () => clearInterval(interval);
-  }, [isPlaying, currentTrack]);
+  const handleSeek = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!progressRef.current || !audioRef.current) return;
+    
+    const rect = progressRef.current.getBoundingClientRect();
+    const clickX = e.clientX - rect.left;
+    const width = rect.width;
+    const seekPercent = clickX / width;
+    const seekTime = seekPercent * duration;
+    
+    audioRef.current.currentTime = seekTime;
+    setCurrentTime(seekTime);
+  };
 
+  const formatTime = (time: number) => {
+    const minutes = Math.floor(time / 60);
+    const seconds = Math.floor(time % 60);
+    return `${minutes}:${seconds.toString().padStart(2, '0')}`;
+  };
+
+  // Handle audio events
   useEffect(() => {
-    setProgress(0);
-    setIsPlaying(false);
-  }, [currentTrack]);
+    const audio = audioRef.current;
+    if (!audio) return;
+
+    const handleTimeUpdate = () => setCurrentTime(audio.currentTime);
+    const handleLoadedMetadata = () => setDuration(audio.duration);
+    const handleEnded = () => {
+      if (currentIndex < album.tracks.length - 1) {
+        onTrackChange(album.tracks[currentIndex + 1]);
+      } else {
+        setIsPlaying(false);
+      }
+    };
+
+    audio.addEventListener('timeupdate', handleTimeUpdate);
+    audio.addEventListener('loadedmetadata', handleLoadedMetadata);
+    audio.addEventListener('ended', handleEnded);
+
+    return () => {
+      audio.removeEventListener('timeupdate', handleTimeUpdate);
+      audio.removeEventListener('loadedmetadata', handleLoadedMetadata);
+      audio.removeEventListener('ended', handleEnded);
+    };
+  }, [currentTrack, currentIndex, album.tracks, onTrackChange]);
+
+  // Auto-play when track changes
+  useEffect(() => {
+    if (audioRef.current && currentTrack?.audioUrl && autoPlay) {
+      audioRef.current.play().then(() => {
+        setIsPlaying(true);
+      }).catch(() => {
+        setIsPlaying(false);
+      });
+    }
+    setCurrentTime(0);
+  }, [currentTrack, autoPlay]);
+
+  // Update volume
+  useEffect(() => {
+    if (audioRef.current) {
+      audioRef.current.volume = volume;
+    }
+  }, [volume]);
 
   if (!currentTrack) return null;
+
+  const progress = duration > 0 ? (currentTime / duration) * 100 : 0;
 
   return (
     <motion.div
@@ -125,15 +171,21 @@ const MusicPlayer = ({ album, currentTrack, onTrackChange }: MusicPlayerProps) =
           {/* Progress */}
           <div className="hidden md:flex items-center gap-3 flex-1 max-w-xs">
             <span className="text-xs text-muted-foreground w-10">
-              {Math.floor(progress * 0.03)}:{String(Math.floor((progress * 1.8) % 60)).padStart(2, '0')}
+              {formatTime(currentTime)}
             </span>
-            <div className="flex-1 h-1 bg-muted rounded-full overflow-hidden">
+            <div 
+              ref={progressRef}
+              onClick={handleSeek}
+              className="flex-1 h-2 bg-muted rounded-full overflow-hidden cursor-pointer group"
+            >
               <motion.div
-                className="h-full bg-primary"
+                className="h-full bg-primary group-hover:bg-primary/80"
                 style={{ width: `${progress}%` }}
               />
             </div>
-            <span className="text-xs text-muted-foreground w-10">{currentTrack.duration}</span>
+            <span className="text-xs text-muted-foreground w-10">
+              {duration > 0 ? formatTime(duration) : currentTrack.duration}
+            </span>
           </div>
 
           {/* Volume */}
