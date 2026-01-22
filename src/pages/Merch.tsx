@@ -1,12 +1,10 @@
 import { motion } from 'framer-motion';
-import Navigation from '@/components/Navigation';
 import MerchCard from '@/components/MerchCard';
 import { merchItems } from '@/data/merch';
 
 const Merch = () => {
   return (
     <div className="min-h-screen">
-      <Navigation />
       
       <main className="pt-24 pb-16">
         <div className="container mx-auto px-6">
