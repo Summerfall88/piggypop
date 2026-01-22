@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import CartButton from './CartButton';
 
 const navItems = [
   { path: '/', label: 'Главная' },
@@ -9,7 +10,11 @@ const navItems = [
   { path: '/merch', label: 'Мерч' },
 ];
 
-const Navigation = () => {
+interface NavigationProps {
+  onCartClick?: () => void;
+}
+
+const Navigation = ({ onCartClick }: NavigationProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
 
@@ -33,15 +38,19 @@ const Navigation = () => {
                 {item.label}
               </Link>
             ))}
+            {onCartClick && <CartButton onClick={onCartClick} />}
           </div>
 
           {/* Mobile Menu Button */}
-          <button
-            className="md:hidden text-foreground p-2"
-            onClick={() => setIsOpen(!isOpen)}
-          >
-            {isOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
+          <div className="md:hidden flex items-center gap-2">
+            {onCartClick && <CartButton onClick={onCartClick} />}
+            <button
+              className="text-foreground p-2"
+              onClick={() => setIsOpen(!isOpen)}
+            >
+              {isOpen ? <X size={24} /> : <Menu size={24} />}
+            </button>
+          </div>
         </div>
 
         {/* Mobile Navigation */}

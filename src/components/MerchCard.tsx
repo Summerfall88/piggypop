@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { ShoppingBag, ChevronDown, ChevronUp } from 'lucide-react';
 import type { MerchItem } from '@/data/merch';
 import { toast } from 'sonner';
+import { useCart } from '@/context/CartContext';
 
 interface MerchCardProps {
   item: MerchItem;
@@ -12,12 +13,14 @@ interface MerchCardProps {
 const MerchCard = ({ item, index }: MerchCardProps) => {
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
   const [showSizeChart, setShowSizeChart] = useState(false);
+  const { addItem } = useCart();
 
   const handleOrder = () => {
     if (!selectedSize) {
       toast.error('Выберите размер');
       return;
     }
+    addItem(item, selectedSize);
     toast.success(`${item.name} (${selectedSize}) добавлен в корзину!`);
   };
 

@@ -9,16 +9,19 @@ import { albums, type Track, type Album } from '@/data/albums';
 const Music = () => {
   const [selectedAlbum, setSelectedAlbum] = useState<Album | null>(null);
   const [currentTrack, setCurrentTrack] = useState<Track | null>(null);
+  const [autoPlay, setAutoPlay] = useState(false);
 
   const handleAlbumClick = (album: Album) => {
     setSelectedAlbum(album);
     if (album.tracks.length > 0) {
       setCurrentTrack(album.tracks[0]);
+      setAutoPlay(false);
     }
   };
 
   const handleTrackClick = (track: Track) => {
     setCurrentTrack(track);
+    setAutoPlay(true);
   };
 
   return (
@@ -120,7 +123,11 @@ const Music = () => {
         <MusicPlayer
           album={selectedAlbum}
           currentTrack={currentTrack}
-          onTrackChange={setCurrentTrack}
+          onTrackChange={(track) => {
+            setCurrentTrack(track);
+            setAutoPlay(true);
+          }}
+          autoPlay={autoPlay}
         />
       )}
     </div>
