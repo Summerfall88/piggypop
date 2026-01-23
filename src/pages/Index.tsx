@@ -3,6 +3,7 @@ import { ArrowRight, Music, ShoppingBag } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Instagram, Youtube, MessageCircle } from 'lucide-react';
 import Sparkle from '@/components/Sparkle';
+import ArtistCarousel from '@/components/ArtistCarousel';
 import paperTexture from '@/assets/paper-texture.jpg';
 import useSecretClick from '@/hooks/useSecretClick';
 const socialLinks = [{
@@ -174,6 +175,9 @@ const Index = () => {
           </motion.div>
         </motion.div>
       </section>
+
+      {/* Artist Photo Carousel */}
+      <ArtistCarousel />
 
       {/* About Section */}
       <section className="py-24 bg-card">
