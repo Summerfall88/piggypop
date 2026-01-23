@@ -31,7 +31,7 @@ export const albums: Album[] = [
     description: 'Дебютный альбом Piggy Pop с энергичными треками и безумными битами.',
     tracks: [
       { id: '1-1', title: 'Intro (Oink Oink)', duration: '1:32', audioUrl: '/audio/bred.wav' },
-      { id: '1-2', title: 'Go! Go! Go!', duration: '3:45' },
+      { id: '1-2', title: 'Go! Go! Go!', duration: '3:45', audioUrl: '/audio/Boot-Sequence.mp3' },
       { id: '1-3', title: 'Piggy Party', duration: '4:12' },
       { id: '1-4', title: 'Night Rider', duration: '3:58' },
       { id: '1-5', title: 'Spark & Shine', duration: '3:21' },
