@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 import { Instagram, Youtube, MessageCircle } from 'lucide-react';
 import Sparkle from '@/components/Sparkle';
 import ArtistCarousel from '@/components/ArtistCarousel';
-import GradientDivider from '@/components/GradientDivider';
 import paperTexture from '@/assets/paper-texture.jpg';
 import useSecretClick from '@/hooks/useSecretClick';
 const socialLinks = [{
@@ -177,14 +176,8 @@ const Index = () => {
         </motion.div>
       </section>
 
-      {/* Gradient transition: Hero -> Carousel */}
-      <div className="h-32 bg-gradient-to-b from-background via-secondary/20 to-secondary/30" />
-
       {/* Artist Photo Carousel */}
       <ArtistCarousel />
-
-      {/* Gradient transition: Carousel -> About */}
-      <div className="h-32 bg-gradient-to-b from-secondary/30 via-card/50 to-card" />
 
       {/* About Section */}
       <section className="py-24 bg-card">
@@ -248,11 +241,8 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Gradient transition: About -> Footer */}
-      <div className="h-16 bg-gradient-to-b from-card via-background/80 to-background" />
-
       {/* Footer */}
-      <footer className="py-8 bg-background border-t border-border">
+      <footer className="py-8 border-t border-border">
         <div className="container mx-auto px-6 text-center text-muted-foreground">
           <p className="font-display text-xl">
             PIGGY<span className="text-primary">POP</span>
