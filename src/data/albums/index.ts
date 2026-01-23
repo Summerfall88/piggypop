@@ -61,7 +61,7 @@ export const albums: Album[] = [
     coverImage: album3Cover,
     description: 'Футуристический альбом на стыке синтвейва и кибер-панка.',
     tracks: [
-      { id: '3-1', title: 'Boot Sequence', duration: '1:45' },
+      { id: '3-1', title: 'Boot Sequence', duration: '1:45', audioUrl: '/audio/Boot-Sequence.mp3' },
       { id: '3-2', title: 'Digital Oink', duration: '3:28' },
       { id: '3-3', title: 'Neon Tokyo', duration: '4:15' },
       { id: '3-4', title: 'Glitch in the System', duration: '3:56' },
