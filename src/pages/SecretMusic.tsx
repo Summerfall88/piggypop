@@ -44,8 +44,8 @@ const SecretMusic = () => {
         }}
       />
       
-      {/* CRT flicker effect */}
-      <div className="fixed inset-0 pointer-events-none z-10 animate-pulse opacity-5 bg-primary" />
+      {/* CRT flicker effect - reduced by 80% */}
+      <div className="fixed inset-0 pointer-events-none z-10 animate-pulse opacity-[0.01] bg-primary" />
 
       <main className="pt-24 relative z-0">
         <div className="container mx-auto px-6">
