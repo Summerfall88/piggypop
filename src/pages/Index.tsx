@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { Instagram, Youtube, MessageCircle } from 'lucide-react';
 import Sparkle from '@/components/Sparkle';
 import paperTexture from '@/assets/paper-texture.jpg';
+import useSecretClick from '@/hooks/useSecretClick';
 const socialLinks = [{
   icon: Instagram,
   href: 'https://instagram.com/piggypop',
@@ -18,6 +19,8 @@ const socialLinks = [{
   label: 'Telegram'
 }];
 const Index = () => {
+  const { handleSecretClick } = useSecretClick();
+  
   return <div className="min-h-screen">
       {/* Hero Section */}
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden" style={{
@@ -103,7 +106,10 @@ const Index = () => {
           }} whileHover={{
             scale: 1.05
           }} className="inline-block mt-8">
-              <div className="relative px-6 py-3">
+              <button 
+                onClick={handleSecretClick}
+                className="relative px-6 py-3 cursor-pointer select-none focus:outline-none"
+              >
                 <span className="text-2xl md:text-3xl lg:text-4xl text-primary relative inline-block" style={{
                 fontFamily: "'Caveat', cursive",
                 textDecoration: 'line-through',
@@ -113,7 +119,7 @@ const Index = () => {
               }}>
                   GO! GO! PIGGY POP!
                 </span>
-              </div>
+              </button>
             </motion.div>
 
             {/* Social Links */}

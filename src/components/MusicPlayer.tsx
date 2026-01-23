@@ -167,7 +167,7 @@ const MusicPlayer = ({
         </div>
       </div>
 
-      {currentTrack.audioUrl && <audio ref={audioRef} src={currentTrack.audioUrl} />}
+      {currentTrack.audioUrl && <audio ref={audioRef} src={currentTrack.audioUrl} preload="auto" />}
     </motion.div>;
 };
 export default MusicPlayer;

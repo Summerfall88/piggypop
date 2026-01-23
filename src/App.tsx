@@ -9,6 +9,7 @@ import ScrollToTop from "./components/ScrollToTop";
 import Index from "./pages/Index";
 import Music from "./pages/Music";
 import Merch from "./pages/Merch";
+import SecretMusic from "./pages/SecretMusic";
 import NotFound from "./pages/NotFound";
 import { CartProvider } from "./context/CartContext";
 import CartDrawer from "./components/CartDrawer";
@@ -31,6 +32,7 @@ const App = () => {
               <Route path="/" element={<Index />} />
               <Route path="/music" element={<Music />} />
               <Route path="/merch" element={<Merch />} />
+              <Route path="/secret" element={<SecretMusic />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
             <CartDrawer isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
