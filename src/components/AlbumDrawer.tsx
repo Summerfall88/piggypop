@@ -66,8 +66,8 @@ const AlbumDrawer = ({ isOpen, onClose, album, currentTrack, onTrackClick }: Alb
               </div>
             </div>
 
-            {/* Tracks */}
-            <div className="flex-1 overflow-y-auto p-4 space-y-1">
+            {/* Tracks - with bottom padding for player */}
+            <div className="flex-1 overflow-y-auto p-4 pb-28 space-y-1">
               {album.tracks.map((track, index) => (
                 <motion.button
                   key={track.id}

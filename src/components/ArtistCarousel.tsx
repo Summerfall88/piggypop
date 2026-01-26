@@ -1,82 +1,81 @@
-import { useEffect, useRef } from 'react';
-import { motion } from 'framer-motion';
+import { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 import photo1 from '@/assets/artist/photo-1.jpg';
 import photo2 from '@/assets/artist/photo-2.jpg';
 import photo3 from '@/assets/artist/photo-3.jpg';
 import photo4 from '@/assets/artist/photo-4.jpg';
 import photo5 from '@/assets/artist/photo-5.jpg';
+import photo6 from '@/assets/artist/photo-6.jpg';
+import photo7 from '@/assets/artist/photo-7.jpg';
+import photo8 from '@/assets/artist/photo-8.jpg';
+import photo9 from '@/assets/artist/photo-9.jpg';
+import photo10 from '@/assets/artist/photo-10.jpg';
 
-const artistPhotos = [photo1, photo2, photo3, photo4, photo5];
+const artistPhotos = [photo1, photo2, photo3, photo4, photo5, photo6, photo7, photo8, photo9, photo10];
 
-const ArtistCarousel = () => {
-  const scrollRef = useRef<HTMLDivElement>(null);
+// Helper to get random duration
+const getRandomDuration = () => Math.floor(Math.random() * 3000) + 2000; // 2-5 seconds
+
+// Individual photo cell with random timing
+const PhotoCell = ({ initialIndex }: { initialIndex: number }) => {
+  const [currentIndex, setCurrentIndex] = useState(initialIndex);
+  const [isAnimating, setIsAnimating] = useState(false);
 
   useEffect(() => {
-    const scrollContainer = scrollRef.current;
-    if (!scrollContainer) return;
-
-    let animationId: number;
-    let scrollPosition = 0;
-    const scrollSpeed = 0.5; // pixels per frame
-
-    const animate = () => {
-      scrollPosition += scrollSpeed;
-      
-      // Reset when we've scrolled past the first set of images
-      const halfWidth = scrollContainer.scrollWidth / 2;
-      if (scrollPosition >= halfWidth) {
-        scrollPosition = 0;
-      }
-      
-      scrollContainer.scrollLeft = scrollPosition;
-      animationId = requestAnimationFrame(animate);
+    const changePhoto = () => {
+      setIsAnimating(true);
+      setTimeout(() => {
+        setCurrentIndex(prev => {
+          let newIndex;
+          do {
+            newIndex = Math.floor(Math.random() * artistPhotos.length);
+          } while (newIndex === prev);
+          return newIndex;
+        });
+        setIsAnimating(false);
+      }, 300);
     };
 
-    animationId = requestAnimationFrame(animate);
+    // Initial random delay + random interval
+    const initialDelay = Math.random() * 2000;
+    const timeoutId = setTimeout(() => {
+      changePhoto();
+      
+      const intervalId = setInterval(changePhoto, getRandomDuration());
+      return () => clearInterval(intervalId);
+    }, initialDelay);
 
-    return () => cancelAnimationFrame(animationId);
+    return () => clearTimeout(timeoutId);
   }, []);
 
-  // Double the photos for seamless loop
-  const doubledPhotos = [...artistPhotos, ...artistPhotos];
+  return (
+    <div className="flex-shrink-0 h-full w-1/3 md:w-1/4 lg:w-1/5 relative overflow-hidden">
+      <AnimatePresence mode="wait">
+        <motion.img
+          key={currentIndex}
+          src={artistPhotos[currentIndex]}
+          alt="Piggy Pop"
+          initial={{ opacity: 0, scale: 1.1 }}
+          animate={{ opacity: isAnimating ? 0 : 1, scale: 1 }}
+          exit={{ opacity: 0, scale: 0.95 }}
+          transition={{ duration: 0.3 }}
+          className="h-full w-full object-cover"
+        />
+      </AnimatePresence>
+    </div>
+  );
+};
+
+const ArtistCarousel = () => {
+  // Create cells with different initial photos
+  const cells = Array.from({ length: 10 }, (_, i) => i % artistPhotos.length);
 
   return (
-    <section className="py-16 bg-secondary/30 overflow-hidden">
-      <motion.h2 
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        className="font-display text-4xl md:text-5xl text-center mb-10 px-6"
-      >
-        PIGGY <span className="text-primary">В ДЕЙСТВИИ</span>
-      </motion.h2>
-      
-      {/* Full-width seamless carousel - no gaps, no rounded corners */}
-      <div 
-        ref={scrollRef}
-        className="flex overflow-hidden"
-        style={{ 
-          scrollbarWidth: 'none',
-          msOverflowStyle: 'none',
-        }}
-      >
-        {doubledPhotos.map((photo, index) => (
-          <div
-            key={index}
-            className="flex-shrink-0 h-[300px] md:h-[400px] lg:h-[500px]"
-            style={{ width: 'auto' }}
-          >
-            <img
-              src={photo}
-              alt={`Piggy Pop photo ${(index % artistPhotos.length) + 1}`}
-              className="h-full w-auto object-cover"
-              style={{ 
-                display: 'block',
-                maxWidth: 'none',
-              }}
-            />
-          </div>
+    <section className="h-[400px] md:h-[500px] lg:h-[600px] overflow-hidden">
+      <div className="flex h-full">
+        {cells.map((initialIndex, i) => (
+          <PhotoCell key={i} initialIndex={initialIndex} />
         ))}
       </div>
     </section>
