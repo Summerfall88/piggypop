@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import { Play, Clock, Skull, Ghost } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Play, Clock, Skull, Ghost, X, Disc } from 'lucide-react';
 import AlbumCard from '@/components/AlbumCard';
 import MusicPlayer from '@/components/MusicPlayer';
 import { secretAlbums } from '@/data/albums/secret';
@@ -11,6 +11,7 @@ const SecretMusic = () => {
   const [currentTrack, setCurrentTrack] = useState<Track | null>(null);
   const [autoPlay, setAutoPlay] = useState(false);
   const [glitchText, setGlitchText] = useState(false);
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
   // Random glitch effect
   useEffect(() => {
@@ -23,15 +24,20 @@ const SecretMusic = () => {
 
   const handleAlbumClick = (album: Album) => {
     setSelectedAlbum(album);
+    setIsDrawerOpen(true);
     if (album.tracks.length > 0) {
       setCurrentTrack(album.tracks[0]);
-      setAutoPlay(false);
+      setAutoPlay(true); // Auto-play first track
     }
   };
 
   const handleTrackClick = (track: Track) => {
     setCurrentTrack(track);
     setAutoPlay(true);
+  };
+
+  const handleCloseDrawer = () => {
+    setIsDrawerOpen(false);
   };
 
   return (
@@ -44,7 +50,7 @@ const SecretMusic = () => {
         }}
       />
       
-      {/* CRT flicker effect - reduced by 80% */}
+      {/* CRT flicker effect - ADJUST OPACITY HERE (currently 0.01 = 1% brightness) */}
       <div className="fixed inset-0 pointer-events-none z-10 animate-pulse opacity-[0.01] bg-primary" />
 
       <main className="pt-24 relative z-0">
@@ -116,43 +122,79 @@ const SecretMusic = () => {
               </motion.div>
             ))}
           </div>
+        </div>
+      </main>
 
-          {/* Selected Album Tracklist */}
-          {selectedAlbum && (
+      {/* Secret Album Drawer - LEFT SIDE */}
+      <AnimatePresence>
+        {isDrawerOpen && selectedAlbum && (
+          <>
+            {/* Backdrop */}
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="bg-black/80 border-2 border-primary/50 rounded-none p-6 md:p-8"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={handleCloseDrawer}
+              className="fixed inset-0 bg-black/90 backdrop-blur-sm z-50"
+            />
+
+            {/* Drawer */}
+            <motion.div
+              initial={{ x: '-100%' }}
+              animate={{ x: 0 }}
+              exit={{ x: '-100%' }}
+              transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+              className="fixed left-0 top-0 h-full w-full max-w-md bg-black border-r-2 border-primary/50 z-50 flex flex-col"
               style={{
-                boxShadow: '0 0 30px hsl(var(--primary) / 0.2), inset 0 0 30px hsl(var(--primary) / 0.05)',
+                boxShadow: '0 0 30px hsl(var(--primary) / 0.3)',
               }}
             >
-              <div className="flex items-start gap-6 mb-8">
-                <div className="relative">
-                  <img
-                    src={selectedAlbum.coverImage}
-                    alt={selectedAlbum.title}
-                    className="w-32 h-32 md:w-48 md:h-48 object-cover"
-                    style={{ imageRendering: 'pixelated' }}
-                  />
-                  <div className="absolute inset-0 border-2 border-primary/30" />
-                </div>
-                <div>
-                  <h2 
-                    className="font-display text-2xl md:text-3xl text-primary"
-                    style={{ fontFamily: "monospace" }}
-                  >
-                    {selectedAlbum.title}
-                  </h2>
-                  <p className="text-primary/60 mt-1 font-mono">{selectedAlbum.year}</p>
-                  <p className="text-primary/70 mt-4 max-w-xl font-mono text-sm">
-                    {selectedAlbum.description}
-                  </p>
+              {/* Header */}
+              <div className="flex items-center justify-between p-6 border-b border-primary/30">
+                <h2 
+                  className="text-xl flex items-center gap-2 text-primary"
+                  style={{ fontFamily: "monospace" }}
+                >
+                  <Disc size={24} />
+                  [ ПЛЕЙЛИСТ ]
+                </h2>
+                <button
+                  onClick={handleCloseDrawer}
+                  className="p-2 hover:bg-primary/20 transition-colors border border-primary/50"
+                >
+                  <X size={24} className="text-primary" />
+                </button>
+              </div>
+
+              {/* Album Info */}
+              <div className="p-6 border-b border-primary/30">
+                <div className="flex items-start gap-4">
+                  <div className="relative">
+                    <img
+                      src={selectedAlbum.coverImage}
+                      alt={selectedAlbum.title}
+                      className="w-24 h-24 object-cover"
+                      style={{ imageRendering: 'pixelated' }}
+                    />
+                    <div className="absolute inset-0 border-2 border-primary/30" />
+                  </div>
+                  <div>
+                    <h3 
+                      className="text-lg text-primary"
+                      style={{ fontFamily: "monospace" }}
+                    >
+                      {selectedAlbum.title}
+                    </h3>
+                    <p className="text-primary/60 text-sm font-mono mt-1">{selectedAlbum.year}</p>
+                    <p className="text-primary/70 text-sm mt-2 line-clamp-2 font-mono">
+                      {selectedAlbum.description}
+                    </p>
+                  </div>
                 </div>
               </div>
 
               {/* Tracks */}
-              <div className="space-y-1">
+              <div className="flex-1 overflow-y-auto p-4 space-y-1">
                 {selectedAlbum.tracks.map((track, index) => (
                   <motion.button
                     key={track.id}
@@ -183,20 +225,9 @@ const SecretMusic = () => {
                 ))}
               </div>
             </motion.div>
-          )}
-
-          {/* Empty State */}
-          {!selectedAlbum && secretAlbums.length > 0 && (
-            <div className="text-center py-12">
-              <p 
-                className="text-primary/50 font-mono text-sm animate-pulse"
-              >
-                [ Выбери альбом, чтобы начать... ]
-              </p>
-            </div>
-          )}
-        </div>
-      </main>
+          </>
+        )}
+      </AnimatePresence>
 
       {/* Player */}
       {selectedAlbum && currentTrack && (
