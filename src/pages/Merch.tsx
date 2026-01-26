@@ -29,12 +29,56 @@ const Merch = () => {
             ))}
           </div>
 
-          {/* Contact Info */}
+          {/* Marketplaces */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             className="mt-16 text-center bg-card rounded-2xl p-8"
+          >
+            <h3 className="font-display text-2xl mb-6">Покупайте на маркетплейсах</h3>
+            <div className="flex flex-wrap justify-center gap-4">
+              <a 
+                href="https://kaspi.kz" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="px-6 py-3 bg-secondary hover:bg-primary hover:text-primary-foreground rounded-full transition-all duration-300 font-medium"
+              >
+                Kaspi
+              </a>
+              <a 
+                href="https://ozon.ru" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="px-6 py-3 bg-secondary hover:bg-primary hover:text-primary-foreground rounded-full transition-all duration-300 font-medium"
+              >
+                Ozon
+              </a>
+              <a 
+                href="https://wildberries.ru" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="px-6 py-3 bg-secondary hover:bg-primary hover:text-primary-foreground rounded-full transition-all duration-300 font-medium"
+              >
+                Wildberries
+              </a>
+              <a 
+                href="https://flip.kz" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="px-6 py-3 bg-secondary hover:bg-primary hover:text-primary-foreground rounded-full transition-all duration-300 font-medium"
+              >
+                Flip.kz
+              </a>
+            </div>
+          </motion.div>
+
+          {/* Contact Info */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="mt-8 text-center bg-card rounded-2xl p-8"
           >
             <h3 className="font-display text-2xl mb-4">Есть вопросы по заказу?</h3>
             <p className="text-muted-foreground">
