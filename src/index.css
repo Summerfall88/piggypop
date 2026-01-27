@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&family=Caveat:wght@400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -44,6 +44,7 @@
 
     --font-display: 'Bebas Neue', sans-serif;
     --font-body: 'Inter', sans-serif;
+    --font-handwritten: 'Caveat', cursive;
   }
 
   .dark {
@@ -88,13 +89,54 @@
   }
 
   .btn-primary {
-    @apply bg-primary text-primary-foreground font-bold uppercase tracking-wider px-8 py-4 rounded-full transition-all duration-300;
-    @apply hover:scale-105 hover:shadow-[0_0_30px_hsl(var(--primary)/0.5)];
+    @apply bg-primary text-primary-foreground font-bold uppercase px-5 py-2.5 rounded-full transition-all duration-300;
+    @apply hover:scale-105 hover:shadow-[0_0_20px_hsl(var(--primary)/0.5)];
+    font-family: var(--font-handwritten);
+    font-size: 1.1rem;
+    letter-spacing: 0.02em;
+    box-shadow: 2px 3px 0 hsl(var(--foreground) / 0.3), inset 0 -2px 0 hsl(var(--primary-foreground) / 0.15);
+    border: 2px solid hsl(var(--primary-foreground) / 0.2);
+    transform: rotate(-1deg);
+  }
+
+  .btn-primary:hover {
+    transform: rotate(-1deg) scale(1.05);
   }
 
   .btn-outline {
-    @apply border-2 border-foreground text-foreground font-bold uppercase tracking-wider px-8 py-4 rounded-full transition-all duration-300;
+    @apply border-2 border-foreground text-foreground font-bold uppercase px-5 py-2.5 rounded-full transition-all duration-300;
     @apply hover:bg-foreground hover:text-background;
+    font-family: var(--font-handwritten);
+    font-size: 1.1rem;
+    letter-spacing: 0.02em;
+    box-shadow: 2px 3px 0 hsl(var(--foreground) / 0.2);
+    transform: rotate(1deg);
+  }
+
+  .btn-outline:hover {
+    transform: rotate(1deg) scale(1.05);
+  }
+
+  .sticker-card {
+    @apply bg-card rounded-3xl overflow-hidden transition-all duration-300;
+    box-shadow: 3px 4px 0 hsl(var(--foreground) / 0.15), inset 0 -2px 0 hsl(var(--foreground) / 0.05);
+    border: 2px solid hsl(var(--foreground) / 0.1);
+  }
+
+  .sticker-card:nth-child(odd) {
+    transform: rotate(-0.5deg);
+  }
+
+  .sticker-card:nth-child(even) {
+    transform: rotate(0.5deg);
+  }
+
+  .sticker-card:hover {
+    @apply scale-[1.02] shadow-[0_15px_40px_-10px_hsl(var(--primary)/0.3)];
+  }
+
+  .font-handwritten {
+    font-family: var(--font-handwritten);
   }
 
   .card-merch {

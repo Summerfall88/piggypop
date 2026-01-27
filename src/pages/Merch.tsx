@@ -43,8 +43,8 @@ const Merch = () => {
             animate={{ opacity: 1, y: 0 }}
             className="mb-12"
           >
-            <h1 className="font-display text-5xl md:text-7xl">
-              МЕРЧ <span className="text-primary">✦</span>
+            <h1 className="font-handwritten text-6xl md:text-8xl">
+              Мерч <span className="text-primary">✦</span>
             </h1>
             <p className="text-muted-foreground mt-2 text-lg">
               Официальный мерч Piggy Pop

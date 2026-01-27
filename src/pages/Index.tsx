@@ -6,6 +6,7 @@ import Sparkle from '@/components/Sparkle';
 import ArtistCarousel from '@/components/ArtistCarousel';
 import paperTexture from '@/assets/paper-texture.jpg';
 import useSecretClick from '@/hooks/useSecretClick';
+
 const socialLinks = [{
   icon: Instagram,
   href: 'https://instagram.com/piggypop',
@@ -19,16 +20,18 @@ const socialLinks = [{
   href: 'https://t.me/piggypop',
   label: 'Telegram'
 }];
+
 const Index = () => {
   const { handleSecretClick } = useSecretClick();
   
-  return <div className="min-h-screen">
+  return (
+    <div className="min-h-screen">
       {/* Hero Section */}
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden" style={{
-      backgroundImage: `url(${paperTexture})`,
-      backgroundSize: 'cover',
-      backgroundPosition: 'center'
-    }}>
+        backgroundImage: `url(${paperTexture})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center'
+      }}>
         {/* Overlay */}
         <div className="absolute inset-0 bg-background/40" />
 
@@ -43,14 +46,14 @@ const Index = () => {
         {/* Content */}
         <div className="relative z-10 container mx-auto px-6 text-center">
           <motion.div initial={{
-          opacity: 1,
-          scale: 1
-        }} animate={{
-          opacity: 1,
-          scale: 1
-        }} transition={{
-          duration: 0.8
-        }}>
+            opacity: 1,
+            scale: 1
+          }} animate={{
+            opacity: 1,
+            scale: 1
+          }} transition={{
+            duration: 0.8
+          }}>
             {/* Main Title */}
             <h1 className="font-display text-7xl md:text-9xl lg:text-[12rem] leading-none tracking-tight text-center pt-16 md:pt-20 group cursor-pointer">
               <motion.span 
@@ -61,7 +64,6 @@ const Index = () => {
                 }}
               >
                 {'PIGGY'.split('').map((letter, i) => {
-                  // Pre-defined "broken" initial states for each letter
                   const initialStates = [
                     { y: -3, rotate: -4 },
                     { y: 2, rotate: 3 },
@@ -90,7 +92,6 @@ const Index = () => {
                 className="block text-primary text-shadow-glow transition-all duration-300 group-hover:tracking-[0.2em] group-hover:[text-shadow:0_0_60px_hsl(var(--primary)),0_0_120px_hsl(var(--primary)/0.6)]"
               >
                 {'POP'.split('').map((letter, i) => {
-                  // Pre-defined "broken" initial states for POP
                   const initialStates = [
                     { y: 3, rotate: 6 },
                     { y: -2, rotate: -4 },
@@ -118,25 +119,24 @@ const Index = () => {
 
             {/* Slogan Badge */}
             <motion.div initial={{
-            scale: 1,
-            rotate: -2
-          }} animate={{
-            scale: 1,
-            rotate: -2
-          }} whileHover={{
-            scale: 1.05
-          }} className="inline-block mt-8">
+              scale: 1,
+              rotate: -2
+            }} animate={{
+              scale: 1,
+              rotate: -2
+            }} whileHover={{
+              scale: 1.05
+            }} className="inline-block mt-8">
               <button 
                 onClick={handleSecretClick}
                 className="relative px-6 py-3 cursor-pointer select-none focus:outline-none"
               >
-                <span className="text-2xl md:text-3xl lg:text-4xl text-primary relative inline-block" style={{
-                fontFamily: "'Caveat', cursive",
-                textDecoration: 'line-through',
-                textDecorationThickness: '3px',
-                textDecorationColor: 'hsl(var(--foreground))',
-                letterSpacing: '0.05em'
-              }}>
+                <span className="text-2xl md:text-3xl lg:text-4xl text-primary relative inline-block font-handwritten" style={{
+                  textDecoration: 'line-through',
+                  textDecorationThickness: '3px',
+                  textDecorationColor: 'hsl(var(--foreground))',
+                  letterSpacing: '0.05em'
+                }}>
                   GO! GO! PIGGY POP!
                 </span>
               </button>
@@ -144,32 +144,41 @@ const Index = () => {
 
             {/* Social Links */}
             <motion.div initial={{
-            opacity: 1,
-            y: 0
-          }} animate={{
-            opacity: 1,
-            y: 0
-          }} className="flex items-center justify-center gap-4 mt-8">
-              {socialLinks.map(social => <a key={social.label} href={social.href} target="_blank" rel="noopener noreferrer" className="p-3 bg-secondary/80 hover:bg-primary hover:text-primary-foreground rounded-full transition-all duration-300 hover:scale-110" aria-label={social.label}>
+              opacity: 1,
+              y: 0
+            }} animate={{
+              opacity: 1,
+              y: 0
+            }} className="flex items-center justify-center gap-4 mt-8">
+              {socialLinks.map(social => (
+                <a 
+                  key={social.label} 
+                  href={social.href} 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="p-3 bg-secondary/80 hover:bg-primary hover:text-primary-foreground rounded-full transition-all duration-300 hover:scale-110" 
+                  aria-label={social.label}
+                >
                   <social.icon size={24} />
-                </a>)}
+                </a>
+              ))}
             </motion.div>
           </motion.div>
 
           {/* CTA Buttons */}
           <motion.div initial={{
-          opacity: 1,
-          y: 0
-        }} animate={{
-          opacity: 1,
-          y: 0
-        }} className="flex-col gap-4 mt-12 sm:flex-col flex items-center justify-start">
-            <Link to="/music" className="btn-primary flex items-center gap-2">  ​<Music size={20} />
-              ​Слушать музыку
-              <ArrowRight size={20} className="opacity-0" />
+            opacity: 1,
+            y: 0
+          }} animate={{
+            opacity: 1,
+            y: 0
+          }} className="flex-col gap-3 mt-12 sm:flex-col flex items-center justify-start">
+            <Link to="/music" className="btn-primary flex items-center gap-2">
+              <Music size={18} />
+              Слушать музыку
             </Link>
             <Link to="/merch" className="btn-outline flex items-center gap-2">
-              <ShoppingBag size={20} />
+              <ShoppingBag size={18} />
               Мерч
             </Link>
           </motion.div>
@@ -177,19 +186,19 @@ const Index = () => {
 
         {/* Scroll Indicator */}
         <motion.div initial={{
-        opacity: 0
-      }} animate={{
-        opacity: 1
-      }} transition={{
-        delay: 2,
-        duration: 1
-      }} className="absolute bottom-8 left-1/2 -translate-x-1/2">
-          <motion.div animate={{
-          y: [0, 10, 0]
+          opacity: 0
+        }} animate={{
+          opacity: 1
         }} transition={{
-          duration: 1.5,
-          repeat: Infinity
-        }} className="w-6 h-10 border-2 border-foreground/30 rounded-full flex justify-center pt-2 opacity-5">
+          delay: 2,
+          duration: 1
+        }} className="absolute bottom-8 left-1/2 -translate-x-1/2">
+          <motion.div animate={{
+            y: [0, 10, 0]
+          }} transition={{
+            duration: 1.5,
+            repeat: Infinity
+          }} className="w-6 h-10 border-2 border-foreground/30 rounded-full flex justify-center pt-2 opacity-5">
             <motion.div className="w-1.5 h-1.5 bg-primary rounded-full opacity-0" />
           </motion.div>
         </motion.div>
@@ -202,17 +211,17 @@ const Index = () => {
       <section className="py-24 bg-card">
         <div className="container mx-auto px-6">
           <motion.div initial={{
-          opacity: 0,
-          y: 30
-        }} whileInView={{
-          opacity: 1,
-          y: 0
-        }} viewport={{
-          once: true
-        }} transition={{
-          duration: 0.6
-        }} className="max-w-3xl mx-auto text-center">
-            <h2 className="font-display text-4xl md:text-6xl mb-6">
+            opacity: 0,
+            y: 30
+          }} whileInView={{
+            opacity: 1,
+            y: 0
+          }} viewport={{
+            once: true
+          }} transition={{
+            duration: 0.6
+          }} className="max-w-3xl mx-auto text-center">
+            <h2 className="font-handwritten text-5xl md:text-7xl mb-6">
               ЧТО ЭТО <span className="text-primary">ТАКОЕ?</span>
             </h2>
             <p className="text-muted-foreground text-lg md:text-xl leading-relaxed">
@@ -224,35 +233,35 @@ const Index = () => {
 
           {/* Quick Links */}
           <motion.div initial={{
-          opacity: 0,
-          y: 30
-        }} whileInView={{
-          opacity: 1,
-          y: 0
-        }} viewport={{
-          once: true
-        }} transition={{
-          delay: 0.2,
-          duration: 0.6
-        }} className="grid md:grid-cols-2 gap-6 mt-16 max-w-4xl mx-auto">
-            <Link to="/music" className="group p-8 bg-secondary rounded-2xl hover:bg-secondary/80 transition-all duration-300">
-              <Music size={40} className="text-primary mb-4" />
-              <h3 className="font-display text-2xl mb-2">Музыка</h3>
+            opacity: 0,
+            y: 30
+          }} whileInView={{
+            opacity: 1,
+            y: 0
+          }} viewport={{
+            once: true
+          }} transition={{
+            delay: 0.2,
+            duration: 0.6
+          }} className="grid md:grid-cols-2 gap-6 mt-16 max-w-4xl mx-auto">
+            <Link to="/music" className="group sticker-card p-8 hover:bg-secondary/80 transition-all duration-300" style={{ transform: 'rotate(-1deg)' }}>
+              <Music size={36} className="text-primary mb-4" />
+              <h3 className="font-handwritten text-3xl mb-2">Музыка</h3>
               <p className="text-muted-foreground">
                 Слушай альбомы и треки прямо на сайте
               </p>
-              <div className="mt-4 flex items-center gap-2 text-primary font-medium">
+              <div className="mt-4 flex items-center gap-2 text-primary font-handwritten text-xl">
                 Перейти <ArrowRight size={18} className="group-hover:translate-x-2 transition-transform" />
               </div>
             </Link>
 
-            <Link to="/merch" className="group p-8 bg-secondary rounded-2xl hover:bg-secondary/80 transition-all duration-300">
-              <ShoppingBag size={40} className="text-primary mb-4" />
-              <h3 className="font-display text-2xl mb-2">Мерч</h3>
+            <Link to="/merch" className="group sticker-card p-8 hover:bg-secondary/80 transition-all duration-300" style={{ transform: 'rotate(1deg)' }}>
+              <ShoppingBag size={36} className="text-primary mb-4" />
+              <h3 className="font-handwritten text-3xl mb-2">Мерч</h3>
               <p className="text-muted-foreground">
                 Футболки, худи и аксессуары с уникальным дизайном
               </p>
-              <div className="mt-4 flex items-center gap-2 text-primary font-medium">
+              <div className="mt-4 flex items-center gap-2 text-primary font-handwritten text-xl">
                 Перейти <ArrowRight size={18} className="group-hover:translate-x-2 transition-transform" />
               </div>
             </Link>
@@ -269,6 +278,8 @@ const Index = () => {
           <p className="text-sm mt-2">© 2024 All rights reserved. Go! Go! Piggy Pop!</p>
         </div>
       </footer>
-    </div>;
+    </div>
+  );
 };
+
 export default Index;
