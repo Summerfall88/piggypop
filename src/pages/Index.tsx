@@ -60,40 +60,59 @@ const Index = () => {
                   transition: { duration: 0.3 }
                 }}
               >
-                {'PIGGY'.split('').map((letter, i) => (
-                  <motion.span 
-                    key={i} 
-                    className="inline-block transition-all duration-300 group-hover:[text-shadow:0_0_40px_hsl(var(--primary)),0_0_80px_hsl(var(--primary)/0.5)]"
-                    style={{ 
-                      animationDelay: `${i * 0.05}s`,
-                    }}
-                    whileHover={{
-                      y: [0, -5, 3, -2, 0],
-                      rotate: [0, -5, 5, -3, 0],
-                      transition: { duration: 0.4 }
-                    }}
-                  >
-                    {letter}
-                  </motion.span>
-                ))}
+                {'PIGGY'.split('').map((letter, i) => {
+                  // Pre-defined "broken" initial states for each letter
+                  const initialStates = [
+                    { y: -3, rotate: -4 },
+                    { y: 2, rotate: 3 },
+                    { y: -1, rotate: -2 },
+                    { y: 4, rotate: 5 },
+                    { y: -2, rotate: -3 },
+                  ];
+                  return (
+                    <motion.span 
+                      key={i} 
+                      className="inline-block transition-all duration-300 group-hover:[text-shadow:0_0_40px_hsl(var(--primary)),0_0_80px_hsl(var(--primary)/0.5)]"
+                      initial={initialStates[i]}
+                      animate={initialStates[i]}
+                      whileHover={{
+                        y: [initialStates[i].y, initialStates[i].y - 5, initialStates[i].y + 3, initialStates[i].y - 2, initialStates[i].y],
+                        rotate: [initialStates[i].rotate, initialStates[i].rotate - 5, initialStates[i].rotate + 5, initialStates[i].rotate - 3, initialStates[i].rotate],
+                        transition: { duration: 0.4 }
+                      }}
+                    >
+                      {letter}
+                    </motion.span>
+                  );
+                })}
               </motion.span>
               <motion.span 
                 className="block text-primary text-shadow-glow transition-all duration-300 group-hover:tracking-[0.2em] group-hover:[text-shadow:0_0_60px_hsl(var(--primary)),0_0_120px_hsl(var(--primary)/0.6)]"
               >
-                {'POP'.split('').map((letter, i) => (
-                  <motion.span 
-                    key={i} 
-                    className="inline-block"
-                    whileHover={{
-                      y: [0, 5, -3, 2, 0],
-                      rotate: [0, 8, -8, 4, 0],
-                      scale: [1, 1.1, 0.95, 1.05, 1],
-                      transition: { duration: 0.5 }
-                    }}
-                  >
-                    {letter}
-                  </motion.span>
-                ))}
+                {'POP'.split('').map((letter, i) => {
+                  // Pre-defined "broken" initial states for POP
+                  const initialStates = [
+                    { y: 3, rotate: 6 },
+                    { y: -2, rotate: -4 },
+                    { y: 4, rotate: 3 },
+                  ];
+                  return (
+                    <motion.span 
+                      key={i} 
+                      className="inline-block"
+                      initial={initialStates[i]}
+                      animate={initialStates[i]}
+                      whileHover={{
+                        y: [initialStates[i].y, initialStates[i].y + 5, initialStates[i].y - 3, initialStates[i].y + 2, initialStates[i].y],
+                        rotate: [initialStates[i].rotate, initialStates[i].rotate + 8, initialStates[i].rotate - 8, initialStates[i].rotate + 4, initialStates[i].rotate],
+                        scale: [1, 1.1, 0.95, 1.05, 1],
+                        transition: { duration: 0.5 }
+                      }}
+                    >
+                      {letter}
+                    </motion.span>
+                  );
+                })}
               </motion.span>
             </h1>
 

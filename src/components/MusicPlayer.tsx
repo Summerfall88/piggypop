@@ -89,17 +89,41 @@ const MusicPlayer = ({
     };
   }, [currentTrack, currentIndex, album.tracks, onTrackChange]);
 
-  // Auto-play when track changes
+  // Auto-play when track changes with click prevention
   useEffect(() => {
-    if (audioRef.current && currentTrack?.audioUrl && autoPlay) {
-      audioRef.current.play().then(() => {
-        setIsPlaying(true);
-      }).catch(() => {
-        setIsPlaying(false);
-      });
-    }
+    const audio = audioRef.current;
+    if (!audio) return;
+
+    // Reset and prepare for new track
+    audio.pause();
+    audio.currentTime = 0;
     setCurrentTime(0);
-  }, [currentTrack, autoPlay]);
+
+    if (currentTrack?.audioUrl && autoPlay) {
+      // Small delay to prevent audio click/pop
+      const playTimer = setTimeout(() => {
+        audio.volume = 0;
+        audio.play().then(() => {
+          // Fade in volume smoothly to prevent click
+          let vol = 0;
+          const fadeIn = setInterval(() => {
+            vol += 0.1;
+            if (vol >= volume) {
+              audio.volume = isMuted ? 0 : volume;
+              clearInterval(fadeIn);
+            } else {
+              audio.volume = isMuted ? 0 : vol;
+            }
+          }, 20);
+          setIsPlaying(true);
+        }).catch(() => {
+          setIsPlaying(false);
+        });
+      }, 50);
+
+      return () => clearTimeout(playTimer);
+    }
+  }, [currentTrack, autoPlay, volume, isMuted]);
 
   // Update volume
   useEffect(() => {
