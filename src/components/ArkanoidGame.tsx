@@ -58,13 +58,14 @@ const ArkanoidGame = ({ isOpen, onClose }: ArkanoidGameProps) => {
 
   // Reset game
   const resetGame = useCallback(() => {
+    const newBricks = initBricks();
     gameStateRef.current = {
       paddleX: GAME_WIDTH / 2 - PADDLE_WIDTH / 2,
       ballX: GAME_WIDTH / 2,
       ballY: GAME_HEIGHT - 50,
       ballSpeedX: 4 * (Math.random() > 0.5 ? 1 : -1),
       ballSpeedY: -4,
-      bricks: initBricks(),
+      bricks: newBricks,
       score: 0,
       gameRunning: true,
     };
@@ -72,6 +73,17 @@ const ArkanoidGame = ({ isOpen, onClose }: ArkanoidGameProps) => {
     setGameOver(false);
     setWon(false);
     setShowSecret(false);
+    
+    // Force restart the game loop
+    const canvas = canvasRef.current;
+    if (canvas) {
+      const ctx = canvas.getContext('2d');
+      if (ctx) {
+        // Clear and redraw immediately
+        ctx.fillStyle = '#000000';
+        ctx.fillRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
+      }
+    }
   }, [initBricks]);
 
   // Handle mouse/touch movement
@@ -83,10 +95,11 @@ const ArkanoidGame = ({ isOpen, onClose }: ArkanoidGameProps) => {
     gameStateRef.current.paddleX = Math.max(0, Math.min(GAME_WIDTH - PADDLE_WIDTH, x - PADDLE_WIDTH / 2));
   }, []);
 
+  // Separate effect for game loop that responds to gameOver state
   useEffect(() => {
     if (!isOpen) return;
+    if (gameOver || won) return; // Don't run loop if game ended
 
-    resetGame();
     const canvas = canvasRef.current;
     if (!canvas) return;
 
@@ -94,8 +107,11 @@ const ArkanoidGame = ({ isOpen, onClose }: ArkanoidGameProps) => {
     if (!ctx) return;
 
     let animationId: number;
+    let isRunning = true;
 
     const gameLoop = () => {
+      if (!isRunning) return;
+      
       const state = gameStateRef.current;
       if (!state.gameRunning) return;
 
@@ -204,11 +220,19 @@ const ArkanoidGame = ({ isOpen, onClose }: ArkanoidGameProps) => {
     canvas.addEventListener('touchmove', handleTouchMove, { passive: false });
 
     return () => {
+      isRunning = false;
       cancelAnimationFrame(animationId);
       canvas.removeEventListener('mousemove', handleMouseMove);
       canvas.removeEventListener('touchmove', handleTouchMove);
     };
-  }, [isOpen, handleMove, resetGame]);
+  }, [isOpen, gameOver, won, handleMove]);
+
+  // Initialize on open
+  useEffect(() => {
+    if (isOpen) {
+      resetGame();
+    }
+  }, [isOpen, resetGame]);
 
   // Handle secret display and close
   useEffect(() => {
