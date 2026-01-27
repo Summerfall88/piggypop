@@ -1,6 +1,35 @@
 import { motion } from 'framer-motion';
+import { ShoppingCart, Store, Package, Truck } from 'lucide-react';
 import MerchCard from '@/components/MerchCard';
 import { merchItems } from '@/data/merch';
+
+// Marketplace icons - placeholders
+const marketplaces = [
+  { 
+    name: 'Kaspi', 
+    href: 'https://kaspi.kz',
+    icon: Store,
+    color: 'hover:bg-red-500',
+  },
+  { 
+    name: 'Ozon', 
+    href: 'https://ozon.ru',
+    icon: Package,
+    color: 'hover:bg-blue-500',
+  },
+  { 
+    name: 'Wildberries', 
+    href: 'https://wildberries.ru',
+    icon: ShoppingCart,
+    color: 'hover:bg-purple-500',
+  },
+  { 
+    name: 'Flip.kz', 
+    href: 'https://flip.kz',
+    icon: Truck,
+    color: 'hover:bg-orange-500',
+  },
+];
 
 const Merch = () => {
   return (
@@ -38,38 +67,18 @@ const Merch = () => {
           >
             <h3 className="font-display text-2xl mb-6">Покупайте на маркетплейсах</h3>
             <div className="flex flex-wrap justify-center gap-4">
-              <a 
-                href="https://kaspi.kz" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="px-6 py-3 bg-secondary hover:bg-primary hover:text-primary-foreground rounded-full transition-all duration-300 font-medium"
-              >
-                Kaspi
-              </a>
-              <a 
-                href="https://ozon.ru" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="px-6 py-3 bg-secondary hover:bg-primary hover:text-primary-foreground rounded-full transition-all duration-300 font-medium"
-              >
-                Ozon
-              </a>
-              <a 
-                href="https://wildberries.ru" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="px-6 py-3 bg-secondary hover:bg-primary hover:text-primary-foreground rounded-full transition-all duration-300 font-medium"
-              >
-                Wildberries
-              </a>
-              <a 
-                href="https://flip.kz" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="px-6 py-3 bg-secondary hover:bg-primary hover:text-primary-foreground rounded-full transition-all duration-300 font-medium"
-              >
-                Flip.kz
-              </a>
+              {marketplaces.map((marketplace) => (
+                <a 
+                  key={marketplace.name}
+                  href={marketplace.href} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className={`w-14 h-14 flex items-center justify-center bg-secondary rounded-xl transition-all duration-300 hover:scale-110 hover:text-white ${marketplace.color}`}
+                  title={marketplace.name}
+                >
+                  <marketplace.icon size={28} />
+                </a>
+              ))}
             </div>
           </motion.div>
 

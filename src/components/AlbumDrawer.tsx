@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Play, Clock, Disc } from 'lucide-react';
+import { X, Play, Clock, Disc, Heart } from 'lucide-react';
 import type { Album, Track } from '@/data/albums';
 
 interface AlbumDrawerProps {
@@ -8,9 +8,19 @@ interface AlbumDrawerProps {
   album: Album | null;
   currentTrack: Track | null;
   onTrackClick: (track: Track) => void;
+  likes: { [trackId: string]: number };
+  onLike: (trackId: string) => void;
 }
 
-const AlbumDrawer = ({ isOpen, onClose, album, currentTrack, onTrackClick }: AlbumDrawerProps) => {
+const AlbumDrawer = ({ 
+  isOpen, 
+  onClose, 
+  album, 
+  currentTrack, 
+  onTrackClick,
+  likes,
+  onLike,
+}: AlbumDrawerProps) => {
   if (!album) return null;
 
   return (
@@ -69,31 +79,56 @@ const AlbumDrawer = ({ isOpen, onClose, album, currentTrack, onTrackClick }: Alb
             {/* Tracks - with bottom padding for player */}
             <div className="flex-1 overflow-y-auto p-4 pb-28 space-y-1">
               {album.tracks.map((track, index) => (
-                <motion.button
+                <motion.div
                   key={track.id}
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: index * 0.05 }}
-                  onClick={() => onTrackClick(track)}
                   className={`w-full flex items-center gap-4 p-4 rounded-xl transition-all duration-200 text-left group
                     ${currentTrack?.id === track.id 
                       ? 'bg-primary/10 text-primary' 
                       : 'hover:bg-secondary'
                     }`}
                 >
-                  <span className="w-8 text-center text-muted-foreground group-hover:hidden">
-                    {index + 1}
-                  </span>
-                  <Play 
-                    size={18} 
-                    className="hidden group-hover:block w-8 text-center text-primary" 
-                  />
-                  <span className="flex-1 font-medium">{track.title}</span>
-                  <span className="flex items-center gap-1 text-muted-foreground text-sm">
-                    <Clock size={14} />
-                    {track.duration}
-                  </span>
-                </motion.button>
+                  <button
+                    onClick={() => onTrackClick(track)}
+                    className="flex items-center gap-4 flex-1"
+                  >
+                    <span className="w-8 text-center text-muted-foreground group-hover:hidden">
+                      {index + 1}
+                    </span>
+                    <Play 
+                      size={18} 
+                      className="hidden group-hover:block w-8 text-center text-primary" 
+                    />
+                    <span className="flex-1 font-medium text-left">{track.title}</span>
+                    <span className="flex items-center gap-1 text-muted-foreground text-sm">
+                      <Clock size={14} />
+                      {track.duration}
+                    </span>
+                  </button>
+                  
+                  {/* Like button and counter */}
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onLike(track.id);
+                    }}
+                    className="flex items-center gap-1 px-2 py-1 rounded-lg hover:bg-primary/10 transition-colors"
+                  >
+                    <Heart 
+                      size={18} 
+                      className={`transition-colors ${
+                        (likes[track.id] || 0) > 0 
+                          ? 'text-red-500 fill-red-500' 
+                          : 'text-muted-foreground hover:text-red-500'
+                      }`}
+                    />
+                    <span className="text-sm text-muted-foreground min-w-[20px]">
+                      {likes[track.id] || 0}
+                    </span>
+                  </button>
+                </motion.div>
               ))}
             </div>
           </motion.div>

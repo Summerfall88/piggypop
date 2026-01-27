@@ -1,22 +1,74 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
+import { Music as MusicIcon, Headphones, Radio, Disc, Play, Podcast } from 'lucide-react';
 import AlbumCard from '@/components/AlbumCard';
 import AlbumDrawer from '@/components/AlbumDrawer';
 import MusicPlayer from '@/components/MusicPlayer';
+import ArkanoidGame from '@/components/ArkanoidGame';
 import { albums, type Track, type Album } from '@/data/albums';
+import { useLikes } from '@/hooks/useLikes';
+
+// Streaming service icons - placeholder SVG icons
+const streamingServices = [
+  { 
+    name: 'Яндекс Музыка', 
+    href: 'https://music.yandex.ru',
+    icon: MusicIcon, // Placeholder
+    color: 'hover:bg-yellow-500',
+  },
+  { 
+    name: 'Spotify', 
+    href: 'https://spotify.com',
+    icon: Disc,
+    color: 'hover:bg-green-500',
+  },
+  { 
+    name: 'Apple Music', 
+    href: 'https://music.apple.com',
+    icon: Headphones,
+    color: 'hover:bg-pink-500',
+  },
+  { 
+    name: 'YouTube Music', 
+    href: 'https://music.youtube.com',
+    icon: Play,
+    color: 'hover:bg-red-500',
+  },
+  { 
+    name: 'VK Музыка', 
+    href: 'https://vk.com/music',
+    icon: Radio,
+    color: 'hover:bg-blue-500',
+  },
+  { 
+    name: 'СберЗвук', 
+    href: 'https://sberzvuk.ru',
+    icon: Podcast,
+    color: 'hover:bg-emerald-500',
+  },
+];
 
 const Music = () => {
   const [selectedAlbum, setSelectedAlbum] = useState<Album | null>(null);
   const [currentTrack, setCurrentTrack] = useState<Track | null>(null);
   const [autoPlay, setAutoPlay] = useState(false);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const { addLike, getLikes, showArkanoid, closeArkanoid } = useLikes();
+
+  // Create likes object for drawer
+  const likesObject = albums.reduce((acc, album) => {
+    album.tracks.forEach(track => {
+      acc[track.id] = getLikes(track.id);
+    });
+    return acc;
+  }, {} as { [key: string]: number });
 
   const handleAlbumClick = (album: Album) => {
     setSelectedAlbum(album);
     setIsDrawerOpen(true);
     if (album.tracks.length > 0) {
       setCurrentTrack(album.tracks[0]);
-      setAutoPlay(true); // Auto-play first track
+      setAutoPlay(true);
     }
   };
 
@@ -69,54 +121,18 @@ const Music = () => {
           >
             <h3 className="font-display text-2xl mb-6">Слушайте на стриминговых сервисах</h3>
             <div className="flex flex-wrap justify-center gap-4">
-              <a 
-                href="https://music.yandex.ru" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="px-6 py-3 bg-secondary hover:bg-primary hover:text-primary-foreground rounded-full transition-all duration-300 font-medium"
-              >
-                Яндекс Музыка
-              </a>
-              <a 
-                href="https://spotify.com" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="px-6 py-3 bg-secondary hover:bg-primary hover:text-primary-foreground rounded-full transition-all duration-300 font-medium"
-              >
-                Spotify
-              </a>
-              <a 
-                href="https://music.apple.com" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="px-6 py-3 bg-secondary hover:bg-primary hover:text-primary-foreground rounded-full transition-all duration-300 font-medium"
-              >
-                Apple Music
-              </a>
-              <a 
-                href="https://music.youtube.com" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="px-6 py-3 bg-secondary hover:bg-primary hover:text-primary-foreground rounded-full transition-all duration-300 font-medium"
-              >
-                YouTube Music
-              </a>
-              <a 
-                href="https://vk.com/music" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="px-6 py-3 bg-secondary hover:bg-primary hover:text-primary-foreground rounded-full transition-all duration-300 font-medium"
-              >
-                VK Музыка
-              </a>
-              <a 
-                href="https://sberzvuk.ru" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="px-6 py-3 bg-secondary hover:bg-primary hover:text-primary-foreground rounded-full transition-all duration-300 font-medium"
-              >
-                СберЗвук
-              </a>
+              {streamingServices.map((service) => (
+                <a 
+                  key={service.name}
+                  href={service.href} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className={`w-14 h-14 flex items-center justify-center bg-secondary rounded-xl transition-all duration-300 hover:scale-110 hover:text-white ${service.color}`}
+                  title={service.name}
+                >
+                  <service.icon size={28} />
+                </a>
+              ))}
             </div>
           </motion.div>
         </div>
@@ -129,6 +145,8 @@ const Music = () => {
         album={selectedAlbum}
         currentTrack={currentTrack}
         onTrackClick={handleTrackClick}
+        likes={likesObject}
+        onLike={addLike}
       />
 
       {/* Player */}
@@ -143,6 +161,9 @@ const Music = () => {
           autoPlay={autoPlay}
         />
       )}
+
+      {/* Secret Arkanoid Game */}
+      <ArkanoidGame isOpen={showArkanoid} onClose={closeArkanoid} />
     </div>
   );
 };
