@@ -6,7 +6,6 @@ import Sparkle from '@/components/Sparkle';
 import ArtistCarousel from '@/components/ArtistCarousel';
 import paperTexture from '@/assets/paper-texture.jpg';
 import useSecretClick from '@/hooks/useSecretClick';
-
 const socialLinks = [{
   icon: Instagram,
   href: 'https://instagram.com/piggypop',
@@ -20,18 +19,17 @@ const socialLinks = [{
   href: 'https://t.me/piggypop',
   label: 'Telegram'
 }];
-
 const Index = () => {
-  const { handleSecretClick } = useSecretClick();
-  
-  return (
-    <div className="min-h-screen">
+  const {
+    handleSecretClick
+  } = useSecretClick();
+  return <div className="min-h-screen">
       {/* Hero Section */}
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden" style={{
-        backgroundImage: `url(${paperTexture})`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center'
-      }}>
+      backgroundImage: `url(${paperTexture})`,
+      backgroundSize: 'cover',
+      backgroundPosition: 'center'
+    }}>
         {/* Overlay */}
         <div className="absolute inset-0 bg-background/40" />
 
@@ -46,97 +44,93 @@ const Index = () => {
         {/* Content */}
         <div className="relative z-10 container mx-auto px-6 text-center">
           <motion.div initial={{
-            opacity: 1,
-            scale: 1
-          }} animate={{
-            opacity: 1,
-            scale: 1
-          }} transition={{
-            duration: 0.8
-          }}>
+          opacity: 1,
+          scale: 1
+        }} animate={{
+          opacity: 1,
+          scale: 1
+        }} transition={{
+          duration: 0.8
+        }}>
             {/* Main Title */}
             <h1 className="font-display text-7xl md:text-9xl lg:text-[12rem] leading-none tracking-tight text-center pt-16 md:pt-20 group cursor-pointer">
-              <motion.span 
-                className="block text-foreground transition-all duration-300 group-hover:tracking-[0.15em]"
-                whileHover={{ 
-                  x: [0, -3, 3, -3, 0],
-                  transition: { duration: 0.3 }
-                }}
-              >
+              <motion.span className="block text-foreground transition-all duration-300 group-hover:tracking-[0.15em]" whileHover={{
+              x: [0, -3, 3, -3, 0],
+              transition: {
+                duration: 0.3
+              }
+            }}>
                 {'PIGGY'.split('').map((letter, i) => {
-                  const initialStates = [
-                    { y: -3, rotate: -4 },
-                    { y: 2, rotate: 3 },
-                    { y: -1, rotate: -2 },
-                    { y: 4, rotate: 5 },
-                    { y: -2, rotate: -3 },
-                  ];
-                  return (
-                    <motion.span 
-                      key={i} 
-                      className="inline-block transition-all duration-300 group-hover:[text-shadow:0_0_40px_hsl(var(--primary)),0_0_80px_hsl(var(--primary)/0.5)]"
-                      initial={initialStates[i]}
-                      animate={initialStates[i]}
-                      whileHover={{
-                        y: [initialStates[i].y, initialStates[i].y - 5, initialStates[i].y + 3, initialStates[i].y - 2, initialStates[i].y],
-                        rotate: [initialStates[i].rotate, initialStates[i].rotate - 5, initialStates[i].rotate + 5, initialStates[i].rotate - 3, initialStates[i].rotate],
-                        transition: { duration: 0.4 }
-                      }}
-                    >
+                const initialStates = [{
+                  y: -3,
+                  rotate: -4
+                }, {
+                  y: 2,
+                  rotate: 3
+                }, {
+                  y: -1,
+                  rotate: -2
+                }, {
+                  y: 4,
+                  rotate: 5
+                }, {
+                  y: -2,
+                  rotate: -3
+                }];
+                return <motion.span key={i} className="inline-block transition-all duration-300 group-hover:[text-shadow:0_0_40px_hsl(var(--primary)),0_0_80px_hsl(var(--primary)/0.5)]" initial={initialStates[i]} animate={initialStates[i]} whileHover={{
+                  y: [initialStates[i].y, initialStates[i].y - 5, initialStates[i].y + 3, initialStates[i].y - 2, initialStates[i].y],
+                  rotate: [initialStates[i].rotate, initialStates[i].rotate - 5, initialStates[i].rotate + 5, initialStates[i].rotate - 3, initialStates[i].rotate],
+                  transition: {
+                    duration: 0.4
+                  }
+                }}>
                       {letter}
-                    </motion.span>
-                  );
-                })}
+                    </motion.span>;
+              })}
               </motion.span>
-              <motion.span 
-                className="block text-primary text-shadow-glow transition-all duration-300 group-hover:tracking-[0.2em] group-hover:[text-shadow:0_0_60px_hsl(var(--primary)),0_0_120px_hsl(var(--primary)/0.6)]"
-              >
+              <motion.span className="block text-primary text-shadow-glow transition-all duration-300 group-hover:tracking-[0.2em] group-hover:[text-shadow:0_0_60px_hsl(var(--primary)),0_0_120px_hsl(var(--primary)/0.6)]">
                 {'POP'.split('').map((letter, i) => {
-                  const initialStates = [
-                    { y: 3, rotate: 6 },
-                    { y: -2, rotate: -4 },
-                    { y: 4, rotate: 3 },
-                  ];
-                  return (
-                    <motion.span 
-                      key={i} 
-                      className="inline-block"
-                      initial={initialStates[i]}
-                      animate={initialStates[i]}
-                      whileHover={{
-                        y: [initialStates[i].y, initialStates[i].y + 5, initialStates[i].y - 3, initialStates[i].y + 2, initialStates[i].y],
-                        rotate: [initialStates[i].rotate, initialStates[i].rotate + 8, initialStates[i].rotate - 8, initialStates[i].rotate + 4, initialStates[i].rotate],
-                        scale: [1, 1.1, 0.95, 1.05, 1],
-                        transition: { duration: 0.5 }
-                      }}
-                    >
+                const initialStates = [{
+                  y: 3,
+                  rotate: 6
+                }, {
+                  y: -2,
+                  rotate: -4
+                }, {
+                  y: 4,
+                  rotate: 3
+                }];
+                return <motion.span key={i} className="inline-block" initial={initialStates[i]} animate={initialStates[i]} whileHover={{
+                  y: [initialStates[i].y, initialStates[i].y + 5, initialStates[i].y - 3, initialStates[i].y + 2, initialStates[i].y],
+                  rotate: [initialStates[i].rotate, initialStates[i].rotate + 8, initialStates[i].rotate - 8, initialStates[i].rotate + 4, initialStates[i].rotate],
+                  scale: [1, 1.1, 0.95, 1.05, 1],
+                  transition: {
+                    duration: 0.5
+                  }
+                }}>
                       {letter}
-                    </motion.span>
-                  );
-                })}
+                    </motion.span>;
+              })}
               </motion.span>
             </h1>
 
             {/* Slogan Badge */}
             <motion.div initial={{
-              scale: 1,
-              rotate: -2
-            }} animate={{
-              scale: 1,
-              rotate: -2
-            }} whileHover={{
-              scale: 1.05
-            }} className="inline-block mt-8">
-              <button 
-                onClick={handleSecretClick}
-                className="relative px-6 py-3 cursor-pointer select-none focus:outline-none"
-              >
+            scale: 1,
+            rotate: -2
+          }} animate={{
+            scale: 1,
+            rotate: -2
+          }} whileHover={{
+            scale: 1.05
+          }} className="inline-block mt-8">
+              <button onClick={handleSecretClick} className="relative px-6 py-3 cursor-pointer select-none focus:outline-none">
                 <span className="text-2xl md:text-3xl lg:text-4xl text-primary relative inline-block font-handwritten" style={{
-                  textDecoration: 'line-through',
-                  textDecorationThickness: '3px',
-                  textDecorationColor: 'hsl(var(--foreground))',
-                  letterSpacing: '0.05em'
-                }}>
+                textDecoration: 'line-through',
+                textDecorationThickness: '3px',
+                textDecorationColor: 'hsl(var(--foreground))',
+                letterSpacing: '0.05em'
+              }}>
                   GO! GO! PIGGY POP!
                 </span>
               </button>
@@ -144,46 +138,32 @@ const Index = () => {
 
             {/* Social Links */}
             <motion.div initial={{
-              opacity: 1,
-              y: 0
-            }} animate={{
-              opacity: 1,
-              y: 0
-            }} className="flex items-center justify-center gap-4 mt-8">
-              {socialLinks.map((social, index) => {
-                const borderRadii = [
-                  '50% 45% 50% 45%',
-                  '45% 50% 45% 50%',
-                  '48% 52% 48% 52%',
-                ];
-                return (
-                  <a 
-                    key={social.label} 
-                    href={social.href} 
-                    target="_blank" 
-                    rel="noopener noreferrer" 
-                    className="w-12 h-12 flex items-center justify-center bg-transparent hover:bg-primary hover:text-primary-foreground transition-all duration-300 hover:scale-110" 
-                    style={{
-                      border: '2px solid hsl(var(--foreground) / 0.5)',
-                      borderRadius: borderRadii[index % 3],
-                    }}
-                    aria-label={social.label}
-                  >
-                    <social.icon size={22} />
-                  </a>
-                );
-              })}
-            </motion.div>
-          </motion.div>
-
-          {/* CTA Buttons */}
-          <motion.div initial={{
             opacity: 1,
             y: 0
           }} animate={{
             opacity: 1,
             y: 0
-          }} className="flex-col gap-3 mt-12 sm:flex-col flex items-center justify-start">
+          }} className="flex items-center justify-center gap-4 mt-8">
+              {socialLinks.map((social, index) => {
+              const borderRadii = ['50% 45% 50% 45%', '45% 50% 45% 50%', '48% 52% 48% 52%'];
+              return <a key={social.label} href={social.href} target="_blank" rel="noopener noreferrer" className="w-12 h-12 flex items-center justify-center bg-transparent hover:bg-primary hover:text-primary-foreground transition-all duration-300 hover:scale-110" style={{
+                border: '2px solid hsl(var(--foreground) / 0.5)',
+                borderRadius: borderRadii[index % 3]
+              }} aria-label={social.label}>
+                    <social.icon size={22} />
+                  </a>;
+            })}
+            </motion.div>
+          </motion.div>
+
+          {/* CTA Buttons */}
+          <motion.div initial={{
+          opacity: 1,
+          y: 0
+        }} animate={{
+          opacity: 1,
+          y: 0
+        }} className="flex-col gap-3 mt-12 sm:flex-col flex items-center justify-start">
             <Link to="/music" className="btn-primary flex items-center gap-2">
               <Music size={18} />
               Слушать музыку
@@ -197,19 +177,19 @@ const Index = () => {
 
         {/* Scroll Indicator */}
         <motion.div initial={{
-          opacity: 0
-        }} animate={{
-          opacity: 1
-        }} transition={{
-          delay: 2,
-          duration: 1
-        }} className="absolute bottom-8 left-1/2 -translate-x-1/2">
+        opacity: 0
+      }} animate={{
+        opacity: 1
+      }} transition={{
+        delay: 2,
+        duration: 1
+      }} className="absolute bottom-8 left-1/2 -translate-x-1/2">
           <motion.div animate={{
-            y: [0, 10, 0]
-          }} transition={{
-            duration: 1.5,
-            repeat: Infinity
-          }} className="w-6 h-10 border-2 border-foreground/30 rounded-full flex justify-center pt-2 opacity-5">
+          y: [0, 10, 0]
+        }} transition={{
+          duration: 1.5,
+          repeat: Infinity
+        }} className="w-6 h-10 border-2 border-foreground/30 flex justify-center pt-2 shadow-none rounded-sm opacity-60">
             <motion.div className="w-1.5 h-1.5 bg-primary rounded-full opacity-0" />
           </motion.div>
         </motion.div>
@@ -222,16 +202,16 @@ const Index = () => {
       <section className="py-24 bg-card">
         <div className="container mx-auto px-6">
           <motion.div initial={{
-            opacity: 0,
-            y: 30
-          }} whileInView={{
-            opacity: 1,
-            y: 0
-          }} viewport={{
-            once: true
-          }} transition={{
-            duration: 0.6
-          }} className="max-w-3xl mx-auto text-center">
+          opacity: 0,
+          y: 30
+        }} whileInView={{
+          opacity: 1,
+          y: 0
+        }} viewport={{
+          once: true
+        }} transition={{
+          duration: 0.6
+        }} className="max-w-3xl mx-auto text-center">
             <h2 className="font-handwritten text-5xl md:text-7xl mb-6">
               ЧТО ЭТО <span className="text-primary">ТАКОЕ?</span>
             </h2>
@@ -244,18 +224,20 @@ const Index = () => {
 
           {/* Quick Links */}
           <motion.div initial={{
-            opacity: 0,
-            y: 30
-          }} whileInView={{
-            opacity: 1,
-            y: 0
-          }} viewport={{
-            once: true
-          }} transition={{
-            delay: 0.2,
-            duration: 0.6
-          }} className="grid md:grid-cols-2 gap-6 mt-16 max-w-4xl mx-auto">
-            <Link to="/music" className="group sticker-card p-8 hover:bg-secondary/80 transition-all duration-300" style={{ transform: 'rotate(-1deg)' }}>
+          opacity: 0,
+          y: 30
+        }} whileInView={{
+          opacity: 1,
+          y: 0
+        }} viewport={{
+          once: true
+        }} transition={{
+          delay: 0.2,
+          duration: 0.6
+        }} className="grid md:grid-cols-2 gap-6 mt-16 max-w-4xl mx-auto">
+            <Link to="/music" className="group sticker-card p-8 hover:bg-secondary/80 transition-all duration-300" style={{
+            transform: 'rotate(-1deg)'
+          }}>
               <Music size={36} className="text-primary mb-4" />
               <h3 className="font-handwritten text-3xl mb-2">Музыка</h3>
               <p className="text-muted-foreground">
@@ -266,7 +248,9 @@ const Index = () => {
               </div>
             </Link>
 
-            <Link to="/merch" className="group sticker-card p-8 hover:bg-secondary/80 transition-all duration-300" style={{ transform: 'rotate(1deg)' }}>
+            <Link to="/merch" className="group sticker-card p-8 hover:bg-secondary/80 transition-all duration-300" style={{
+            transform: 'rotate(1deg)'
+          }}>
               <ShoppingBag size={36} className="text-primary mb-4" />
               <h3 className="font-handwritten text-3xl mb-2">Мерч</h3>
               <p className="text-muted-foreground">
@@ -289,8 +273,6 @@ const Index = () => {
           <p className="text-sm mt-2">© 2024 All rights reserved. Go! Go! Piggy Pop!</p>
         </div>
       </footer>
-    </div>
-  );
+    </div>;
 };
-
 export default Index;
