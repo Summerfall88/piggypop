@@ -160,7 +160,7 @@ const ArtistCarousel = () => {
   }, []);
 
   return (
-    <section className="h-[400px] md:h-[500px] lg:h-[600px] overflow-hidden">
+    <section className="h-[400px] md:h-[500px] lg:h-[600px] overflow-hidden carousel-glitch">
       <div 
         ref={scrollRef}
         className="flex h-full overflow-hidden"
