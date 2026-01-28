@@ -184,14 +184,7 @@ const Index = () => {
         delay: 2,
         duration: 1
       }} className="absolute bottom-8 left-1/2 -translate-x-1/2">
-          <motion.div animate={{
-          y: [0, 10, 0]
-        }} transition={{
-          duration: 1.5,
-          repeat: Infinity
-        }} className="w-6 h-10 border-2 border-foreground/30 flex justify-center pt-2 shadow-none rounded-sm opacity-60">
-            <motion.div className="w-1.5 h-1.5 bg-primary rounded-full opacity-0" />
-          </motion.div>
+          
         </motion.div>
       </section>
 
