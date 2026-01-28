@@ -163,7 +163,7 @@ const Index = () => {
         }} animate={{
           opacity: 1,
           y: 0
-        }} className="flex-col gap-3 mt-12 sm:flex-col flex items-center justify-start">
+        }} className="flex-col gap-3 mt-12 sm:flex-col flex items-center justify-start opacity-100">
             <Link to="/music" className="btn-primary flex items-center gap-2">
               <Music size={18} />
               Слушать музыку
