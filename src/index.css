@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&family=Caveat:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&family=Patrick+Hand&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -44,7 +44,7 @@
 
     --font-display: 'Bebas Neue', sans-serif;
     --font-body: 'Inter', sans-serif;
-    --font-handwritten: 'Caveat', cursive;
+    --font-handwritten: 'Patrick Hand', cursive;
   }
 
   .dark {
@@ -89,13 +89,12 @@
   }
 
   .btn-primary {
-    @apply bg-primary text-primary-foreground font-bold uppercase px-5 py-2.5 rounded-full transition-all duration-300;
-    @apply hover:scale-105 hover:shadow-[0_0_20px_hsl(var(--primary)/0.5)];
+    @apply bg-primary text-primary-foreground font-bold uppercase px-4 py-2 rounded-full transition-all duration-300;
+    @apply hover:scale-105;
     font-family: var(--font-handwritten);
-    font-size: 1.1rem;
+    font-size: 1rem;
     letter-spacing: 0.02em;
-    box-shadow: 2px 3px 0 hsl(var(--foreground) / 0.3), inset 0 -2px 0 hsl(var(--primary-foreground) / 0.15);
-    border: 2px solid hsl(var(--primary-foreground) / 0.2);
+    border: 2px solid hsl(var(--primary-foreground) / 0.3);
     transform: rotate(-1deg);
   }
 
@@ -104,12 +103,11 @@
   }
 
   .btn-outline {
-    @apply border-2 border-foreground text-foreground font-bold uppercase px-5 py-2.5 rounded-full transition-all duration-300;
+    @apply border-2 border-foreground/60 text-foreground font-bold uppercase px-4 py-2 rounded-full transition-all duration-300;
     @apply hover:bg-foreground hover:text-background;
     font-family: var(--font-handwritten);
-    font-size: 1.1rem;
+    font-size: 1rem;
     letter-spacing: 0.02em;
-    box-shadow: 2px 3px 0 hsl(var(--foreground) / 0.2);
     transform: rotate(1deg);
   }
 
@@ -118,21 +116,41 @@
   }
 
   .sticker-card {
-    @apply bg-card rounded-3xl overflow-hidden transition-all duration-300;
-    box-shadow: 3px 4px 0 hsl(var(--foreground) / 0.15), inset 0 -2px 0 hsl(var(--foreground) / 0.05);
-    border: 2px solid hsl(var(--foreground) / 0.1);
+    @apply bg-card/50 rounded-2xl overflow-hidden transition-all duration-300;
+    border: 2px solid hsl(var(--foreground) / 0.4);
+    border-radius: 20px;
   }
 
   .sticker-card:nth-child(odd) {
     transform: rotate(-0.5deg);
+    border-radius: 18px 22px 20px 24px;
   }
 
   .sticker-card:nth-child(even) {
     transform: rotate(0.5deg);
+    border-radius: 22px 18px 24px 20px;
   }
 
   .sticker-card:hover {
-    @apply scale-[1.02] shadow-[0_15px_40px_-10px_hsl(var(--primary)/0.3)];
+    @apply scale-[1.02];
+    border-color: hsl(var(--foreground) / 0.6);
+  }
+
+  .hand-drawn-icon {
+    @apply flex items-center justify-center transition-all duration-300;
+    border: 2px solid hsl(var(--foreground) / 0.5);
+  }
+
+  .hand-drawn-icon:nth-child(1) {
+    border-radius: 50% 45% 50% 45%;
+  }
+
+  .hand-drawn-icon:nth-child(2) {
+    border-radius: 45% 50% 45% 50%;
+  }
+
+  .hand-drawn-icon:nth-child(3) {
+    border-radius: 48% 52% 48% 52%;
   }
 
   .font-handwritten {

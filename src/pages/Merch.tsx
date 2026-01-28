@@ -63,22 +63,34 @@ const Merch = () => {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="mt-16 text-center bg-card rounded-2xl p-8"
+            className="mt-16 text-center sticker-card p-8"
           >
             <h3 className="font-display text-2xl mb-6">Покупайте на маркетплейсах</h3>
             <div className="flex flex-wrap justify-center gap-4">
-              {marketplaces.map((marketplace) => (
-                <a 
-                  key={marketplace.name}
-                  href={marketplace.href} 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className={`w-14 h-14 flex items-center justify-center bg-secondary rounded-xl transition-all duration-300 hover:scale-110 hover:text-white ${marketplace.color}`}
-                  title={marketplace.name}
-                >
-                  <marketplace.icon size={28} />
-                </a>
-              ))}
+              {marketplaces.map((marketplace, index) => {
+                const borderRadii = [
+                  '50% 45% 50% 45%',
+                  '45% 50% 45% 50%',
+                  '48% 52% 48% 52%',
+                  '52% 48% 52% 48%',
+                ];
+                return (
+                  <a 
+                    key={marketplace.name}
+                    href={marketplace.href} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className={`w-14 h-14 flex items-center justify-center bg-transparent transition-all duration-300 hover:scale-110 hover:text-white ${marketplace.color}`}
+                    style={{
+                      border: '2px solid hsl(var(--foreground) / 0.5)',
+                      borderRadius: borderRadii[index % 4],
+                    }}
+                    title={marketplace.name}
+                  >
+                    <marketplace.icon size={26} />
+                  </a>
+                );
+              })}
             </div>
           </motion.div>
 
@@ -87,7 +99,7 @@ const Merch = () => {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="mt-8 text-center bg-card rounded-2xl p-8"
+            className="mt-8 text-center sticker-card p-8"
           >
             <h3 className="font-display text-2xl mb-4">Есть вопросы по заказу?</h3>
             <p className="text-muted-foreground">

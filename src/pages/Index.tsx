@@ -150,18 +150,29 @@ const Index = () => {
               opacity: 1,
               y: 0
             }} className="flex items-center justify-center gap-4 mt-8">
-              {socialLinks.map(social => (
-                <a 
-                  key={social.label} 
-                  href={social.href} 
-                  target="_blank" 
-                  rel="noopener noreferrer" 
-                  className="p-3 bg-secondary/80 hover:bg-primary hover:text-primary-foreground rounded-full transition-all duration-300 hover:scale-110" 
-                  aria-label={social.label}
-                >
-                  <social.icon size={24} />
-                </a>
-              ))}
+              {socialLinks.map((social, index) => {
+                const borderRadii = [
+                  '50% 45% 50% 45%',
+                  '45% 50% 45% 50%',
+                  '48% 52% 48% 52%',
+                ];
+                return (
+                  <a 
+                    key={social.label} 
+                    href={social.href} 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    className="w-12 h-12 flex items-center justify-center bg-transparent hover:bg-primary hover:text-primary-foreground transition-all duration-300 hover:scale-110" 
+                    style={{
+                      border: '2px solid hsl(var(--foreground) / 0.5)',
+                      borderRadius: borderRadii[index % 3],
+                    }}
+                    aria-label={social.label}
+                  >
+                    <social.icon size={22} />
+                  </a>
+                );
+              })}
             </motion.div>
           </motion.div>
 

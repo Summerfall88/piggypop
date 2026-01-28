@@ -6,14 +6,10 @@ interface ArkanoidGameProps {
   onClose: () => void;
 }
 
-const GAME_WIDTH = 400;
-const GAME_HEIGHT = 500;
-const PADDLE_WIDTH = 80;
 const PADDLE_HEIGHT = 12;
 const BALL_SIZE = 10;
 const BRICK_ROWS = 5;
 const BRICK_COLS = 8;
-const BRICK_WIDTH = GAME_WIDTH / BRICK_COLS - 4;
 const BRICK_HEIGHT = 20;
 const WIN_SCORE = 1000;
 
@@ -25,15 +21,20 @@ interface Brick {
 
 const ArkanoidGame = ({ isOpen, onClose }: ArkanoidGameProps) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
   const [score, setScore] = useState(0);
   const [gameOver, setGameOver] = useState(false);
   const [won, setWon] = useState(false);
   const [showSecret, setShowSecret] = useState(false);
+  const [gameSize, setGameSize] = useState({ width: 400, height: 500 });
+  
+  const PADDLE_WIDTH = gameSize.width * 0.2;
+  const BRICK_WIDTH = gameSize.width / BRICK_COLS - 4;
 
   const gameStateRef = useRef({
-    paddleX: GAME_WIDTH / 2 - PADDLE_WIDTH / 2,
-    ballX: GAME_WIDTH / 2,
-    ballY: GAME_HEIGHT - 50,
+    paddleX: gameSize.width / 2 - PADDLE_WIDTH / 2,
+    ballX: gameSize.width / 2,
+    ballY: gameSize.height - 50,
     ballSpeedX: 4,
     ballSpeedY: -4,
     bricks: [] as Brick[],
@@ -41,28 +42,53 @@ const ArkanoidGame = ({ isOpen, onClose }: ArkanoidGameProps) => {
     gameRunning: true,
   });
 
+  // Calculate responsive size
+  useEffect(() => {
+    const updateSize = () => {
+      const maxWidth = Math.min(window.innerWidth - 32, 600);
+      const maxHeight = Math.min(window.innerHeight - 200, 700);
+      const aspectRatio = 0.8; // width/height
+      
+      let width = maxWidth;
+      let height = width / aspectRatio;
+      
+      if (height > maxHeight) {
+        height = maxHeight;
+        width = height * aspectRatio;
+      }
+      
+      setGameSize({ width, height });
+    };
+    
+    updateSize();
+    window.addEventListener('resize', updateSize);
+    return () => window.removeEventListener('resize', updateSize);
+  }, []);
+
   // Initialize bricks
   const initBricks = useCallback(() => {
+    const brickWidth = gameSize.width / BRICK_COLS - 4;
     const bricks: Brick[] = [];
     for (let row = 0; row < BRICK_ROWS; row++) {
       for (let col = 0; col < BRICK_COLS; col++) {
         bricks.push({
-          x: col * (BRICK_WIDTH + 4) + 2,
+          x: col * (brickWidth + 4) + 2,
           y: row * (BRICK_HEIGHT + 4) + 40,
           active: true,
         });
       }
     }
     return bricks;
-  }, []);
+  }, [gameSize.width]);
 
   // Reset game
   const resetGame = useCallback(() => {
+    const paddleW = gameSize.width * 0.2;
     const newBricks = initBricks();
     gameStateRef.current = {
-      paddleX: GAME_WIDTH / 2 - PADDLE_WIDTH / 2,
-      ballX: GAME_WIDTH / 2,
-      ballY: GAME_HEIGHT - 50,
+      paddleX: gameSize.width / 2 - paddleW / 2,
+      ballX: gameSize.width / 2,
+      ballY: gameSize.height - 50,
       ballSpeedX: 4 * (Math.random() > 0.5 ? 1 : -1),
       ballSpeedY: -4,
       bricks: newBricks,
@@ -81,19 +107,20 @@ const ArkanoidGame = ({ isOpen, onClose }: ArkanoidGameProps) => {
       if (ctx) {
         // Clear and redraw immediately
         ctx.fillStyle = '#000000';
-        ctx.fillRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
+        ctx.fillRect(0, 0, gameSize.width, gameSize.height);
       }
     }
-  }, [initBricks]);
+  }, [initBricks, gameSize]);
 
   // Handle mouse/touch movement
   const handleMove = useCallback((clientX: number) => {
     const canvas = canvasRef.current;
     if (!canvas) return;
+    const paddleW = gameSize.width * 0.2;
     const rect = canvas.getBoundingClientRect();
     const x = clientX - rect.left;
-    gameStateRef.current.paddleX = Math.max(0, Math.min(GAME_WIDTH - PADDLE_WIDTH, x - PADDLE_WIDTH / 2));
-  }, []);
+    gameStateRef.current.paddleX = Math.max(0, Math.min(gameSize.width - paddleW, x - paddleW / 2));
+  }, [gameSize]);
 
   // Separate effect for game loop that responds to gameOver state
   useEffect(() => {
@@ -105,6 +132,11 @@ const ArkanoidGame = ({ isOpen, onClose }: ArkanoidGameProps) => {
 
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
+
+    const GAME_WIDTH = gameSize.width;
+    const GAME_HEIGHT = gameSize.height;
+    const PADDLE_WIDTH = GAME_WIDTH * 0.2;
+    const BRICK_WIDTH = GAME_WIDTH / BRICK_COLS - 4;
 
     let animationId: number;
     let isRunning = true;
@@ -225,7 +257,7 @@ const ArkanoidGame = ({ isOpen, onClose }: ArkanoidGameProps) => {
       canvas.removeEventListener('mousemove', handleMouseMove);
       canvas.removeEventListener('touchmove', handleTouchMove);
     };
-  }, [isOpen, gameOver, won, handleMove]);
+  }, [isOpen, gameOver, won, handleMove, gameSize]);
 
   // Initialize on open
   useEffect(() => {
@@ -251,17 +283,25 @@ const ArkanoidGame = ({ isOpen, onClose }: ArkanoidGameProps) => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="fixed inset-0 bg-black z-[100] flex items-center justify-center"
+          className="fixed inset-0 bg-black z-[100] flex items-center justify-center p-4"
         >
           {!showSecret ? (
-            <div className="flex flex-col items-center gap-4">
-              <h2 className="text-white font-mono text-2xl mb-4">ARKANOID</h2>
+            <div ref={containerRef} className="flex flex-col items-center gap-4 w-full max-w-[600px]">
+              <div className="flex items-center justify-between w-full px-2">
+                <h2 className="text-white font-mono text-xl md:text-2xl">ARKANOID</h2>
+                <button
+                  onClick={onClose}
+                  className="text-white font-mono text-sm md:text-base hover:text-gray-300 transition-colors px-4 py-2 border border-white/50 rounded"
+                >
+                  ЗАКРЫТЬ [X]
+                </button>
+              </div>
               <canvas
                 ref={canvasRef}
-                width={GAME_WIDTH}
-                height={GAME_HEIGHT}
-                className="border-2 border-white cursor-none"
-                style={{ imageRendering: 'pixelated' }}
+                width={gameSize.width}
+                height={gameSize.height}
+                className="border-2 border-white cursor-none w-full"
+                style={{ imageRendering: 'pixelated', maxWidth: gameSize.width }}
               />
               
               {gameOver && !won && (
