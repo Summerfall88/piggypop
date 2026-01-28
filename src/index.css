@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&family=Patrick+Hand&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Oswald:wght@400;500;600;700&family=Patrick+Hand&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -43,7 +43,7 @@
     --piggy-gray: 0 0% 15%;
 
     --font-display: 'Bebas Neue', sans-serif;
-    --font-body: 'Inter', sans-serif;
+    --font-body: 'Oswald', sans-serif;
     --font-handwritten: 'Patrick Hand', cursive;
   }
 

@@ -117,7 +117,7 @@ const MerchCard = ({ item, index }: MerchCardProps) => {
 
         {/* Order Button */}
         {item.inStock && (
-          <button onClick={handleOrder} className="btn-primary w-full flex items-center justify-center gap-2">
+          <button onClick={handleOrder} className="btn-primary w-full flex items-center justify-center gap-2" style={{ transform: 'rotate(0deg)' }}>
             <ShoppingBag size={20} />
             Заказать
           </button>
