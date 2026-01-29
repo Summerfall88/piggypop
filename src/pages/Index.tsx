@@ -192,70 +192,7 @@ const Index = () => {
       <ArtistCarousel />
 
       {/* About Section */}
-      <section className="py-24 bg-card">
-        <div className="container mx-auto px-6">
-          <motion.div initial={{
-          opacity: 0,
-          y: 30
-        }} whileInView={{
-          opacity: 1,
-          y: 0
-        }} viewport={{
-          once: true
-        }} transition={{
-          duration: 0.6
-        }} className="max-w-3xl mx-auto text-center">
-            <h2 className="font-handwritten text-5xl md:text-7xl mb-6">
-              ЧТО ЭТО <span className="text-primary">ТАКОЕ?</span>
-            </h2>
-            <p className="text-muted-foreground text-lg md:text-xl leading-relaxed">
-              Piggy Pop — это не просто музыка. Это энергия, драйв и безумие в каждом бите. 
-              Панк-поп с примесью электроники, который заставляет двигаться и не останавливаться. 
-              Go! Go! Piggy Pop!
-            </p>
-          </motion.div>
-
-          {/* Quick Links */}
-          <motion.div initial={{
-          opacity: 0,
-          y: 30
-        }} whileInView={{
-          opacity: 1,
-          y: 0
-        }} viewport={{
-          once: true
-        }} transition={{
-          delay: 0.2,
-          duration: 0.6
-        }} className="grid md:grid-cols-2 gap-6 mt-16 max-w-4xl mx-auto">
-            <Link to="/music" className="group sticker-card p-8 hover:bg-secondary/80 transition-all duration-300" style={{
-            transform: 'rotate(-1deg)'
-          }}>
-              <Music size={36} className="text-primary mb-4" />
-              <h3 className="font-handwritten text-3xl mb-2">Музыка</h3>
-              <p className="text-muted-foreground">
-                Слушай альбомы и треки прямо на сайте
-              </p>
-              <div className="mt-4 flex items-center gap-2 text-primary font-handwritten text-xl">
-                Перейти <ArrowRight size={18} className="group-hover:translate-x-2 transition-transform" />
-              </div>
-            </Link>
-
-            <Link to="/merch" className="group sticker-card p-8 hover:bg-secondary/80 transition-all duration-300" style={{
-            transform: 'rotate(1deg)'
-          }}>
-              <ShoppingBag size={36} className="text-primary mb-4" />
-              <h3 className="font-handwritten text-3xl mb-2">Мерч</h3>
-              <p className="text-muted-foreground">
-                Футболки, худи и аксессуары с уникальным дизайном
-              </p>
-              <div className="mt-4 flex items-center gap-2 text-primary font-handwritten text-xl">
-                Перейти <ArrowRight size={18} className="group-hover:translate-x-2 transition-transform" />
-              </div>
-            </Link>
-          </motion.div>
-        </div>
-      </section>
+      
 
       {/* Footer */}
       <footer className="py-8 border-t border-border">
