@@ -68,7 +68,7 @@ const PhotoCell = ({
       if (intervalId) clearInterval(intervalId);
     };
   }, [getValidNewIndex]);
-  return;
+  return null;
 };
 const ArtistCarousel = () => {
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -127,6 +127,6 @@ const ArtistCarousel = () => {
     animationId = requestAnimationFrame(animate);
     return () => cancelAnimationFrame(animationId);
   }, []);
-  return;
+  return null;
 };
 export default ArtistCarousel;

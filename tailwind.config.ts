@@ -16,6 +16,7 @@ export default {
       fontFamily: {
         display: ['Bebas Neue', 'sans-serif'],
         body: ['Inter', 'sans-serif'],
+        "sue-ellen": ['"Sue Ellen Francisco"', 'cursive'],
       },
       colors: {
         border: "hsl(var(--border))",
