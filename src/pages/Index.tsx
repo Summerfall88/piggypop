@@ -200,7 +200,7 @@ const Index = () => {
           <p className="font-display text-xl">
             PIGGY<span className="text-primary">POP</span>
           </p>
-          <p className="text-sm mt-2">© 2024 All rights reserved. Go! Go! Piggy Pop!</p>
+          <p className="text-sm mt-2">© 2026 All rights reserved. Go! Go! Piggy Pop!</p>
         </div>
       </footer>
     </div>;
