@@ -132,6 +132,7 @@ const Index = () => {
                 letterSpacing: '0.05em'
               }}>
                 GO! GO! PIGGY POP!
+
               </span>
             </button>
           </motion.div>
