@@ -125,7 +125,7 @@ const Index = () => {
             scale: 1.05
           }} className="inline-block mt-8">
               <button onClick={handleSecretClick} className="relative px-6 py-3 cursor-pointer select-none focus:outline-none">
-                <span className="text-2xl md:text-3xl lg:text-4xl text-primary relative inline-block font-handwritten" style={{
+                <span className="text-2xl md:text-3xl lg:text-4xl text-primary relative inline-block font-['Oswald']" style={{
                 textDecoration: 'line-through',
                 textDecorationThickness: '3px',
                 textDecorationColor: 'hsl(var(--foreground))',
