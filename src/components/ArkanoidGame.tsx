@@ -312,13 +312,13 @@ const ArkanoidGame = ({ isOpen, onClose }: ArkanoidGameProps) => {
                     onClick={resetGame}
                     className="px-6 py-2 bg-white text-black font-mono hover:bg-gray-200 transition-colors"
                   >
-                    TRY AGAIN
+                    ЗАНОВО
                   </button>
                 </div>
               )}
 
               <p className="text-white/50 font-mono text-sm mt-2">
-                Move paddle with mouse or touch
+                ДВИГАЙСЯ!
               </p>
             </div>
           ) : (
@@ -334,7 +334,7 @@ const ArkanoidGame = ({ isOpen, onClose }: ArkanoidGameProps) => {
               >
                 667
               </h1>
-              <p className="text-white/70 font-mono mt-4">Returning...</p>
+              <p className="text-white/70 font-mono mt-4">...</p>
             </motion.div>
           )}
         </motion.div>
