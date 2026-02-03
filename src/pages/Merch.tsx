@@ -87,7 +87,7 @@ const Merch = () => {
         }} className="mt-8 text-center sticker-card p-8">
             <h3 className="font-display text-2xl mb-4">Есть вопросы по заказу?</h3>
             <p className="text-muted-foreground">
-              Напишите нам на почту: <span className="text-primary">merch@piggypop.com</span>
+              Напишите нам на почту: <span className="text-primary">gogopiggypop@gmail.com</span>
             </p>
             <p className="text-muted-foreground mt-2">
               Доставка по всей России. Отправка в течение 3-5 рабочих дней.
