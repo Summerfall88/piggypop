@@ -73,7 +73,7 @@ const SecretMusic = () => {
             <p className="text-primary/70 mt-4 text-sm md:text-base tracking-widest uppercase" style={{
             fontFamily: "monospace"
           }}>
-              >> возможно что-то из этого ? <<
+              {">> возможно что-то из этого ? <<"}
             </p>
             
             <motion.div initial={{
