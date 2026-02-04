@@ -14,16 +14,146 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      radio_state: {
+        Row: {
+          current_track_id: string | null
+          id: number
+          started_at: string
+          updated_at: string
+        }
+        Insert: {
+          current_track_id?: string | null
+          id?: number
+          started_at?: string
+          updated_at?: string
+        }
+        Update: {
+          current_track_id?: string | null
+          id?: number
+          started_at?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "radio_state_current_track_id_fkey"
+            columns: ["current_track_id"]
+            isOneToOne: false
+            referencedRelation: "tracks"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      submissions: {
+        Row: {
+          agreed_to_terms: boolean
+          artist_name: string
+          created_at: string
+          email: string | null
+          id: string
+          reviewed_at: string | null
+          status: Database["public"]["Enums"]["submission_status"]
+          track_title: string
+          track_url: string
+        }
+        Insert: {
+          agreed_to_terms?: boolean
+          artist_name: string
+          created_at?: string
+          email?: string | null
+          id?: string
+          reviewed_at?: string | null
+          status?: Database["public"]["Enums"]["submission_status"]
+          track_title: string
+          track_url: string
+        }
+        Update: {
+          agreed_to_terms?: boolean
+          artist_name?: string
+          created_at?: string
+          email?: string | null
+          id?: string
+          reviewed_at?: string | null
+          status?: Database["public"]["Enums"]["submission_status"]
+          track_title?: string
+          track_url?: string
+        }
+        Relationships: []
+      }
+      tracks: {
+        Row: {
+          artist_name: string
+          audio_source_url: string
+          cover_image_url: string | null
+          created_at: string
+          duration_seconds: number
+          id: string
+          source_type: Database["public"]["Enums"]["source_type"]
+          status: Database["public"]["Enums"]["track_status"]
+          track_title: string
+        }
+        Insert: {
+          artist_name: string
+          audio_source_url: string
+          cover_image_url?: string | null
+          created_at?: string
+          duration_seconds: number
+          id?: string
+          source_type?: Database["public"]["Enums"]["source_type"]
+          status?: Database["public"]["Enums"]["track_status"]
+          track_title: string
+        }
+        Update: {
+          artist_name?: string
+          audio_source_url?: string
+          cover_image_url?: string | null
+          created_at?: string
+          duration_seconds?: number
+          id?: string
+          source_type?: Database["public"]["Enums"]["source_type"]
+          status?: Database["public"]["Enums"]["track_status"]
+          track_title?: string
+        }
+        Relationships: []
+      }
+      user_roles: {
+        Row: {
+          created_at: string
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin" | "moderator" | "user"
+      source_type: "soundcloud" | "youtube" | "file"
+      submission_status: "pending" | "approved" | "rejected"
+      track_status: "active" | "inactive"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +280,11 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin", "moderator", "user"],
+      source_type: ["soundcloud", "youtube", "file"],
+      submission_status: ["pending", "approved", "rejected"],
+      track_status: ["active", "inactive"],
+    },
   },
 } as const
