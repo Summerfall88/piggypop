@@ -1,9 +1,11 @@
- import { useEffect, useRef } from "react";
+ import { useEffect, useRef, useImperativeHandle, forwardRef } from "react";
  
  interface SoundCloudEmbedProps {
    trackUrl: string;
    isPlaying: boolean;
    volume: number;
+   initialSeekMs?: number;
+   onTrackEnd?: () => void;
  }
  
  declare global {
@@ -32,10 +34,25 @@
    getPosition: (callback: (position: number) => void) => void;
  }
  
- const SoundCloudEmbed = ({ trackUrl, isPlaying, volume }: SoundCloudEmbedProps) => {
+ export interface SoundCloudEmbedRef {
+   seekTo: (ms: number) => void;
+ }
+ 
+ const SoundCloudEmbed = forwardRef<SoundCloudEmbedRef, SoundCloudEmbedProps>(
+   ({ trackUrl, isPlaying, volume, initialSeekMs = 0, onTrackEnd }, ref) => {
    const iframeRef = useRef<HTMLIFrameElement>(null);
    const widgetRef = useRef<SCWidget | null>(null);
    const isReadyRef = useRef(false);
+   const hasInitializedRef = useRef(false);
+ 
+   // Expose seekTo method
+   useImperativeHandle(ref, () => ({
+     seekTo: (ms: number) => {
+       if (widgetRef.current && isReadyRef.current) {
+         widgetRef.current.seekTo(ms);
+       }
+     },
+   }));
  
    // Load SoundCloud Widget API
    useEffect(() => {
@@ -50,6 +67,8 @@
  
    // Initialize widget when iframe loads
    useEffect(() => {
+     hasInitializedRef.current = false;
+ 
      const initWidget = () => {
        if (!iframeRef.current || !window.SC) return;
  
@@ -59,9 +78,21 @@
        widget.bind(window.SC.Widget.Events.READY, () => {
          isReadyRef.current = true;
          widget.setVolume(volume);
+ 
+         // Seek to initial position for sync
+         if (initialSeekMs > 0 && !hasInitializedRef.current) {
+           widget.seekTo(initialSeekMs);
+           hasInitializedRef.current = true;
+         }
+ 
          if (isPlaying) {
            widget.play();
          }
+       });
+ 
+       // Handle track end
+       widget.bind(window.SC.Widget.Events.FINISH, () => {
+         onTrackEnd?.();
        });
      };
  
@@ -107,6 +138,8 @@
        className="hidden"
      />
    );
- };
+ });
+ 
+ SoundCloudEmbed.displayName = "SoundCloudEmbed";
  
  export default SoundCloudEmbed;

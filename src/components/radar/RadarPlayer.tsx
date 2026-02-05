@@ -1,16 +1,57 @@
- import { useState } from "react";
+ import { useState, useRef, useCallback } from "react";
  import { Play, Pause, Volume2, VolumeX, Radio } from "lucide-react";
  import { Button } from "@/components/ui/button";
  import { Slider } from "@/components/ui/slider";
+ import { Progress } from "@/components/ui/progress";
  import NowPlaying from "./NowPlaying";
- import SoundCloudEmbed from "./SoundCloudEmbed";
+ import SoundCloudEmbed, { type SoundCloudEmbedRef } from "./SoundCloudEmbed";
  import { useRadioState } from "@/hooks/useRadioState";
+ import { useRadioSync, formatTime } from "@/hooks/useRadioSync";
+ import { supabase } from "@/integrations/supabase/client";
  
  const RadarPlayer = () => {
    const [isPlaying, setIsPlaying] = useState(false);
    const [volume, setVolume] = useState(80);
    const [isMuted, setIsMuted] = useState(false);
-   const { currentTrack, isLoading } = useRadioState();
+   const { currentTrack, startedAt, isLoading } = useRadioState();
+   const soundcloudRef = useRef<SoundCloudEmbedRef>(null);
+ 
+   // Handle track end - trigger next track
+   const handleTrackEnd = useCallback(async () => {
+     console.log("Track ended, fetching next track...");
+     
+     try {
+       // Get all active tracks
+       const { data: tracks, error } = await supabase
+         .from("tracks")
+         .select("id")
+         .eq("status", "active")
+         .order("created_at", { ascending: true });
+ 
+       if (error || !tracks || tracks.length === 0) {
+         console.log("No active tracks available");
+         return;
+       }
+ 
+       // Find current track index and get next one
+       const currentIndex = tracks.findIndex((t) => t.id === currentTrack?.id);
+       const nextIndex = (currentIndex + 1) % tracks.length;
+       const nextTrackId = tracks[nextIndex].id;
+ 
+       // Note: In production, this would be handled by an Edge Function
+       // For now, we just log - the admin will manage track changes
+       console.log("Next track would be:", nextTrackId);
+     } catch (err) {
+       console.error("Error handling track end:", err);
+     }
+   }, [currentTrack?.id]);
+ 
+   const { elapsedSeconds, remainingSeconds, progress, initialSeekMs } = useRadioSync({
+     currentTrack,
+     startedAt,
+     isPlaying,
+     onTrackEnd: handleTrackEnd,
+   });
  
    const handlePlayPause = () => {
      setIsPlaying(!isPlaying);
@@ -45,12 +86,26 @@
          {/* Now Playing */}
          <NowPlaying track={currentTrack} isLoading={isLoading} />
  
+         {/* Progress Bar */}
+         {currentTrack && (
+           <div className="mt-4 space-y-2">
+             <Progress value={progress} className="h-1" />
+             <div className="flex justify-between text-xs text-muted-foreground">
+               <span>{formatTime(elapsedSeconds)}</span>
+               <span>-{formatTime(remainingSeconds)}</span>
+             </div>
+           </div>
+         )}
+ 
          {/* SoundCloud Embed (hidden, controls audio) */}
          {currentTrack && (
            <SoundCloudEmbed
+             ref={soundcloudRef}
              trackUrl={currentTrack.audio_source_url}
              isPlaying={isPlaying}
              volume={isMuted ? 0 : volume}
+             initialSeekMs={initialSeekMs}
+             onTrackEnd={handleTrackEnd}
            />
          )}
  
