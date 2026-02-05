@@ -7,6 +7,7 @@ import CartButton from './CartButton';
 const navItems = [
   { path: '/', label: 'Главная' },
   { path: '/music', label: 'Музыка' },
+   { path: '/radar', label: 'Radar' },
   { path: '/merch', label: 'Мерч' },
 ];
 
