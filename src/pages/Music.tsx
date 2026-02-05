@@ -89,7 +89,7 @@ const Music = () => {
           opacity: 1,
           y: 0
         }} className="mb-12">
-            <h1 className="font-handwritten md:text-8xl text-5xl font-thin">
+            <h1 className="font-handwritten md:text-8xl font-thin font-sans text-sm">
               ​ 
             </h1>
             <p className="text-muted-foreground mt-2 text-lg">
