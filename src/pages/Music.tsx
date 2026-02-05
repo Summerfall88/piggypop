@@ -90,7 +90,7 @@ const Music = () => {
           y: 0
         }} className="mb-12">
             <h1 className="font-handwritten md:text-8xl text-5xl font-thin">
-              МУЗЫКА 
+              ​ 
             </h1>
             <p className="text-muted-foreground mt-2 text-lg">
               Все альбомы и треки Piggy Pop
