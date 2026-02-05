@@ -39,8 +39,7 @@ const Merch = () => {
           y: 0
         }} className="mb-12">
             <h1 className="font-handwritten text-6xl md:text-8xl">
-              Мерч 
-            </h1>
+          </h1>
             <p className="text-muted-foreground mt-2 text-lg">
               Официальный мерч Piggy Pop
             </p>
