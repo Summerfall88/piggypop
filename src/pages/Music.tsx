@@ -90,9 +90,7 @@ const Music = () => {
           y: 0
         }} className="mb-12">
             
-            <p className="text-muted-foreground mt-2 text-lg">
-              Все альбомы и треки Piggy Pop
-            </p>
+            <p className="text-muted-foreground mt-2 text-lg">Лисн ту ё харт. Все треки Пигги зд</p>
           </motion.div>
 
           {/* Albums Grid */}
