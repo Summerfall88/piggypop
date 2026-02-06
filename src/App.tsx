@@ -10,7 +10,8 @@ import Index from "./pages/Index";
 import Music from "./pages/Music";
 import Merch from "./pages/Merch";
 import SecretMusic from "./pages/SecretMusic";
- import Radar from "./pages/Radar";
+import Radar from "./pages/Radar";
+import RadarAdmin from "./pages/RadarAdmin";
 import NotFound from "./pages/NotFound";
 import { CartProvider } from "./context/CartContext";
 import CartDrawer from "./components/CartDrawer";
@@ -37,6 +38,7 @@ const App = () => {
                <Route path="/radar" element={<Radar />} />
               <Route path="/merch" element={<Merch />} />
               <Route path="/secret" element={<SecretMusic />} />
+              <Route path="/radar-admin" element={<RadarAdmin />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
             <CartDrawer isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
