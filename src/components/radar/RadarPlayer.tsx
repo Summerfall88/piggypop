@@ -17,34 +17,23 @@
    const soundcloudRef = useRef<SoundCloudEmbedRef>(null);
  
    // Handle track end - trigger next track
-   const handleTrackEnd = useCallback(async () => {
-     console.log("Track ended, fetching next track...");
-     
-     try {
-       // Get all active tracks
-       const { data: tracks, error } = await supabase
-         .from("tracks")
-         .select("id")
-         .eq("status", "active")
-         .order("created_at", { ascending: true });
- 
-       if (error || !tracks || tracks.length === 0) {
-         console.log("No active tracks available");
-         return;
-       }
- 
-       // Find current track index and get next one
-       const currentIndex = tracks.findIndex((t) => t.id === currentTrack?.id);
-       const nextIndex = (currentIndex + 1) % tracks.length;
-       const nextTrackId = tracks[nextIndex].id;
- 
-       // Note: In production, this would be handled by an Edge Function
-       // For now, we just log - the admin will manage track changes
-       console.log("Next track would be:", nextTrackId);
-     } catch (err) {
-       console.error("Error handling track end:", err);
-     }
-   }, [currentTrack?.id]);
+    const handleTrackEnd = useCallback(async () => {
+      console.log("Track ended, calling radio-next-track edge function...");
+      
+      try {
+        const response = await fetch(
+          "https://jiixmzwmvxkjpyxyomth.supabase.co/functions/v1/radio-next-track",
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+          }
+        );
+        const result = await response.json();
+        console.log("Next track result:", result);
+      } catch (err) {
+        console.error("Error calling radio-next-track:", err);
+      }
+    }, []);
  
    const { elapsedSeconds, remainingSeconds, progress, initialSeekMs } = useRadioSync({
      currentTrack,
