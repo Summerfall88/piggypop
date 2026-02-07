@@ -1,16 +1,14 @@
- import { useState, useRef, useCallback } from "react";
- import { Play, Pause, Volume2, VolumeX, Radio } from "lucide-react";
- import { Button } from "@/components/ui/button";
- import { Slider } from "@/components/ui/slider";
- import { Progress } from "@/components/ui/progress";
- import NowPlaying from "./NowPlaying";
- import SoundCloudEmbed, { type SoundCloudEmbedRef } from "./SoundCloudEmbed";
- import { useRadioState } from "@/hooks/useRadioState";
- import { useRadioSync, formatTime } from "@/hooks/useRadioSync";
- import { supabase } from "@/integrations/supabase/client";
+import { useState, useRef, useCallback } from "react";
+import { Volume2, VolumeX, Radio } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Slider } from "@/components/ui/slider";
+import NowPlaying from "./NowPlaying";
+import SoundCloudEmbed, { type SoundCloudEmbedRef } from "./SoundCloudEmbed";
+import { useRadioState } from "@/hooks/useRadioState";
+import { useRadioSync } from "@/hooks/useRadioSync";
  
  const RadarPlayer = () => {
-   const [isPlaying, setIsPlaying] = useState(false);
+   const [isPlaying, setIsPlaying] = useState(true);
    const [volume, setVolume] = useState(80);
    const [isMuted, setIsMuted] = useState(false);
    const { currentTrack, startedAt, isLoading } = useRadioState();
@@ -42,11 +40,8 @@
      onTrackEnd: handleTrackEnd,
    });
  
-   const handlePlayPause = () => {
-     setIsPlaying(!isPlaying);
-   };
- 
-   const handleVolumeChange = (value: number[]) => {
+  // Volume handlers
+  const handleVolumeChange = (value: number[]) => {
      setVolume(value[0]);
      if (value[0] > 0 && isMuted) {
        setIsMuted(false);
@@ -75,16 +70,6 @@
          {/* Now Playing */}
          <NowPlaying track={currentTrack} isLoading={isLoading} />
  
-         {/* Progress Bar */}
-         {currentTrack && (
-           <div className="mt-4 space-y-2">
-             <Progress value={progress} className="h-1" />
-             <div className="flex justify-between text-xs text-muted-foreground">
-               <span>{formatTime(elapsedSeconds)}</span>
-               <span>-{formatTime(remainingSeconds)}</span>
-             </div>
-           </div>
-         )}
  
          {/* SoundCloud Embed (hidden, controls audio) */}
          {currentTrack && (
@@ -98,47 +83,28 @@
            />
          )}
  
-         {/* Controls */}
-         <div className="flex flex-col gap-4 mt-6">
-           {/* Play/Pause Button */}
-           <div className="flex justify-center">
-             <Button
-               size="lg"
-               onClick={handlePlayPause}
-               disabled={!currentTrack}
-               className="w-16 h-16 rounded-full"
-             >
-               {isPlaying ? (
-                 <Pause className="h-8 w-8" />
-               ) : (
-                 <Play className="h-8 w-8 ml-1" />
-               )}
-             </Button>
-           </div>
- 
-           {/* Volume Control */}
-           <div className="flex items-center gap-3 max-w-xs mx-auto w-full">
-             <Button
-               variant="ghost"
-               size="icon"
-               onClick={toggleMute}
-               className="shrink-0"
-             >
-               {isMuted || volume === 0 ? (
-                 <VolumeX className="h-5 w-5" />
-               ) : (
-                 <Volume2 className="h-5 w-5" />
-               )}
-             </Button>
-             <Slider
-               value={[isMuted ? 0 : volume]}
-               onValueChange={handleVolumeChange}
-               max={100}
-               step={1}
-               className="flex-1"
-             />
-           </div>
-         </div>
+          {/* Volume Control */}
+          <div className="flex items-center gap-3 max-w-xs mx-auto w-full mt-6">
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={toggleMute}
+              className="shrink-0"
+            >
+              {isMuted || volume === 0 ? (
+                <VolumeX className="h-5 w-5" />
+              ) : (
+                <Volume2 className="h-5 w-5" />
+              )}
+            </Button>
+            <Slider
+              value={[isMuted ? 0 : volume]}
+              onValueChange={handleVolumeChange}
+              max={100}
+              step={1}
+              className="flex-1"
+            />
+          </div>
  
          {/* No track message */}
          {!isLoading && !currentTrack && (
