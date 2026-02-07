@@ -35,7 +35,7 @@
  
  type SubmitFormData = z.infer<typeof submitSchema>;
  
- const SubmitForm = () => {
+ const SubmitForm = ({ onSuccess }: { onSuccess?: () => void }) => {
    const [isSubmitting, setIsSubmitting] = useState(false);
    const { toast } = useToast();
  
@@ -64,12 +64,13 @@
  
        if (error) throw error;
  
-       toast({
-         title: "Заявка отправлена!",
-         description: "Мы рассмотрим твой трек в ближайшее время.",
-       });
- 
-       form.reset();
+        toast({
+          title: "Заявка отправлена!",
+          description: "Мы рассмотрим твой трек в ближайшее время.",
+        });
+
+        form.reset();
+        onSuccess?.();
      } catch (error) {
        console.error("Submit error:", error);
        toast({

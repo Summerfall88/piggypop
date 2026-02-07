@@ -27,42 +27,26 @@ export const useAdminAuth = () => {
       return !error && data !== null;
     };
 
+    // Initial check first
+    supabase.auth.getSession().then(async ({ data: { session } }) => {
+      if (session?.user) {
+        const isAdmin = await checkAdminRole(session.user.id);
+        setState({ user: session.user, isAdmin, isLoading: false });
+      } else {
+        setState({ user: null, isAdmin: false, isLoading: false });
+      }
+    });
+
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (event, session) => {
         if (session?.user) {
           const isAdmin = await checkAdminRole(session.user.id);
-          setState({
-            user: session.user,
-            isAdmin,
-            isLoading: false,
-          });
+          setState({ user: session.user, isAdmin, isLoading: false });
         } else {
-          setState({
-            user: null,
-            isAdmin: false,
-            isLoading: false,
-          });
+          setState({ user: null, isAdmin: false, isLoading: false });
         }
       }
     );
-
-    // Initial check
-    supabase.auth.getSession().then(async ({ data: { session } }) => {
-      if (session?.user) {
-        const isAdmin = await checkAdminRole(session.user.id);
-        setState({
-          user: session.user,
-          isAdmin,
-          isLoading: false,
-        });
-      } else {
-        setState({
-          user: null,
-          isAdmin: false,
-          isLoading: false,
-        });
-      }
-    });
 
     return () => subscription.unsubscribe();
   }, []);
