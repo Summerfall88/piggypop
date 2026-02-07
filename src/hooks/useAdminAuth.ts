@@ -17,28 +17,21 @@ export const useAdminAuth = () => {
 
   useEffect(() => {
     const checkAdminRole = async (userId: string) => {
-      const { data, error } = await supabase
-        .from("user_roles")
-        .select("role")
-        .eq("user_id", userId)
-        .eq("role", "admin")
-        .maybeSingle();
-
-      return !error && data !== null;
+      try {
+        const { data, error } = await supabase
+          .from("user_roles")
+          .select("role")
+          .eq("user_id", userId)
+          .eq("role", "admin")
+          .maybeSingle();
+        return !error && data !== null;
+      } catch {
+        return false;
+      }
     };
 
-    // Initial check first
-    supabase.auth.getSession().then(async ({ data: { session } }) => {
-      if (session?.user) {
-        const isAdmin = await checkAdminRole(session.user.id);
-        setState({ user: session.user, isAdmin, isLoading: false });
-      } else {
-        setState({ user: null, isAdmin: false, isLoading: false });
-      }
-    });
-
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      async (event, session) => {
+      async (_event, session) => {
         if (session?.user) {
           const isAdmin = await checkAdminRole(session.user.id);
           setState({ user: session.user, isAdmin, isLoading: false });
