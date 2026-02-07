@@ -40,7 +40,7 @@ const Merch = () => {
         }} className="mb-12">
             <h1 className="font-handwritten text-6xl md:text-8xl">
           </h1>
-            <p className="text-muted-foreground mt-2 text-lg">Choose your destiny! Официальный мерч Piggy Pop.</p>
+            <p className="text-muted-foreground mt-2 text-lg">Choose your destiny! Официальный мерч Piggy.</p>
           </motion.div>
 
           {/* Products Grid */}
