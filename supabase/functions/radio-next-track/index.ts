@@ -18,7 +18,6 @@ interface RadioState {
 }
 
 Deno.serve(async (req) => {
-  // Handle CORS preflight
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
   }
@@ -26,8 +25,16 @@ Deno.serve(async (req) => {
   try {
     const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
     const supabaseServiceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
-
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
+
+    // Check for force parameter (client says track ended)
+    let force = false;
+    try {
+      const body = await req.json();
+      force = body?.force === true;
+    } catch {
+      // No body or invalid JSON, that's fine
+    }
 
     // Get current radio state
     const { data: radioState, error: stateError } = await supabase
@@ -70,36 +77,45 @@ Deno.serve(async (req) => {
       );
     }
 
-    // Check if we need to switch tracks
     let needsSwitch = false;
     let nextTrackId: string;
 
     if (!state.current_track_id) {
-      // No current track, start with first one
       needsSwitch = true;
       nextTrackId = activeTracks[0].id;
-    } else {
-      // Check if current track has ended
-      const currentTrack = activeTracks.find((t) => t.id === state.current_track_id);
+    } else if (force) {
+      // Client says track finished — trust it and switch
+      needsSwitch = true;
+      const currentIndex = activeTracks.findIndex((t) => t.id === state.current_track_id);
+      const nextIndex = (currentIndex + 1) % activeTracks.length;
+      nextTrackId = activeTracks[nextIndex].id;
       
+      // But prevent switching if the track was just switched (< 5 seconds ago)
+      const startedAt = new Date(state.started_at).getTime();
+      const elapsed = (Date.now() - startedAt) / 1000;
+      if (elapsed < 5) {
+        console.log("Track was just switched, ignoring force request");
+        return new Response(
+          JSON.stringify({ message: "Track was just switched, ignoring" }),
+          { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+        );
+      }
+    } else {
+      const currentTrack = activeTracks.find((t) => t.id === state.current_track_id);
+
       if (!currentTrack) {
-        // Current track is no longer active, switch to first
         needsSwitch = true;
         nextTrackId = activeTracks[0].id;
       } else {
         const startedAt = new Date(state.started_at).getTime();
-        const now = Date.now();
-        const elapsedSeconds = (now - startedAt) / 1000;
+        const elapsedSeconds = (Date.now() - startedAt) / 1000;
 
         if (elapsedSeconds >= currentTrack.duration_seconds) {
           needsSwitch = true;
-          
-          // Find next track in rotation
           const currentIndex = activeTracks.findIndex((t) => t.id === state.current_track_id);
           const nextIndex = (currentIndex + 1) % activeTracks.length;
           nextTrackId = activeTracks[nextIndex].id;
         } else {
-          // Track still playing
           return new Response(
             JSON.stringify({
               message: "Track still playing",
@@ -128,13 +144,10 @@ Deno.serve(async (req) => {
         );
       }
 
-      console.log(`Switched to track: ${nextTrackId}`);
-      
+      console.log(`Switched to track: ${nextTrackId!}`);
+
       return new Response(
-        JSON.stringify({
-          message: "Track switched",
-          new_track_id: nextTrackId,
-        }),
+        JSON.stringify({ message: "Track switched", new_track_id: nextTrackId }),
         { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
     }

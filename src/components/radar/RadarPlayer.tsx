@@ -16,20 +16,36 @@ import { useRadioSync } from "@/hooks/useRadioSync";
  
    // Handle track end - trigger next track
     const handleTrackEnd = useCallback(async () => {
-      console.log("Track ended, calling radio-next-track edge function...");
+      console.log("Track ended, calling radio-next-track with force...");
       
-      try {
-        const response = await fetch(
-          "https://jiixmzwmvxkjpyxyomth.supabase.co/functions/v1/radio-next-track",
-          {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-          }
-        );
-        const result = await response.json();
-        console.log("Next track result:", result);
-      } catch (err) {
-        console.error("Error calling radio-next-track:", err);
+      const callNextTrack = async (attempt: number) => {
+        try {
+          const response = await fetch(
+            "https://jiixmzwmvxkjpyxyomth.supabase.co/functions/v1/radio-next-track",
+            {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ force: true }),
+            }
+          );
+          const result = await response.json();
+          console.log(`Next track result (attempt ${attempt}):`, result);
+          return result;
+        } catch (err) {
+          console.error(`Error calling radio-next-track (attempt ${attempt}):`, err);
+          return null;
+        }
+      };
+
+      // Try up to 3 times with increasing delays
+      let result = await callNextTrack(1);
+      if (!result || result.error) {
+        await new Promise(r => setTimeout(r, 2000));
+        result = await callNextTrack(2);
+      }
+      if (!result || result.error) {
+        await new Promise(r => setTimeout(r, 5000));
+        await callNextTrack(3);
       }
     }, []);
  
