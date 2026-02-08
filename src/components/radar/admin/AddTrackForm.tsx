@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { Plus, Loader2 } from "lucide-react";
+import { Plus, Loader2, Search } from "lucide-react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
@@ -15,13 +15,6 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 
 const trackSchema = z.object({
@@ -30,13 +23,13 @@ const trackSchema = z.object({
   audio_source_url: z.string().url("Введите корректную ссылку"),
   cover_image_url: z.string().url("Введите корректную ссылку").optional().or(z.literal("")),
   duration_seconds: z.coerce.number().min(1, "Введите длительность"),
-  source_type: z.enum(["soundcloud", "youtube", "file"]),
 });
 
 type TrackFormData = z.infer<typeof trackSchema>;
 
 const AddTrackForm = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isFetching, setIsFetching] = useState(false);
   const { toast } = useToast();
   const queryClient = useQueryClient();
 
@@ -48,9 +41,68 @@ const AddTrackForm = () => {
       audio_source_url: "",
       cover_image_url: "",
       duration_seconds: 0,
-      source_type: "soundcloud",
     },
   });
+
+  const fetchSoundCloudMeta = async (url: string) => {
+    if (!url.includes("soundcloud.com")) return;
+
+    setIsFetching(true);
+    try {
+      const response = await fetch(
+        "https://jiixmzwmvxkjpyxyomth.supabase.co/functions/v1/resolve-soundcloud",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ url }),
+        }
+      );
+
+      if (!response.ok) throw new Error("Failed to fetch");
+
+      const data = await response.json();
+
+      if (data.is_playlist && data.tracks?.length) {
+        // It's a playlist — add all tracks
+        toast({
+          title: `Найден плейлист с ${data.tracks.length} треками`,
+          description: "Добавляем все треки...",
+        });
+
+        for (const track of data.tracks) {
+          await supabase.from("tracks").insert({
+            artist_name: track.artist_name || data.artist_name,
+            track_title: track.track_title,
+            audio_source_url: url, // playlist URL
+            cover_image_url: track.cover_image_url || data.cover_image_url || null,
+            duration_seconds: track.duration_seconds || 180,
+            source_type: "soundcloud" as const,
+            status: "active" as const,
+          });
+        }
+
+        queryClient.invalidateQueries({ queryKey: ["admin-tracks"] });
+        toast({ title: `${data.tracks.length} треков добавлено` });
+        form.reset();
+        setIsOpen(false);
+        setIsFetching(false);
+        return;
+      }
+
+      // Single track — populate form
+      if (data.artist_name) form.setValue("artist_name", data.artist_name);
+      if (data.track_title) form.setValue("track_title", data.track_title);
+      if (data.cover_image_url) form.setValue("cover_image_url", data.cover_image_url);
+      if (data.duration_seconds > 0) form.setValue("duration_seconds", data.duration_seconds);
+
+      toast({ title: "Метаданные загружены из SoundCloud" });
+    } catch (err) {
+      console.error("Failed to fetch SoundCloud metadata:", err);
+      toast({ title: "Не удалось получить метаданные", variant: "destructive" });
+    } finally {
+      setIsFetching(false);
+    }
+  };
 
   const addTrack = useMutation({
     mutationFn: async (data: TrackFormData) => {
@@ -60,8 +112,8 @@ const AddTrackForm = () => {
         audio_source_url: data.audio_source_url,
         cover_image_url: data.cover_image_url || null,
         duration_seconds: data.duration_seconds,
-        source_type: data.source_type,
-        status: "active",
+        source_type: "soundcloud" as const,
+        status: "active" as const,
       });
 
       if (error) throw error;
@@ -97,6 +149,45 @@ const AddTrackForm = () => {
 
       <Form {...form}>
         <form onSubmit={form.handleSubmit((data) => addTrack.mutate(data))} className="space-y-4">
+          {/* URL field with auto-fetch */}
+          <FormField
+            control={form.control}
+            name="audio_source_url"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Ссылка SoundCloud</FormLabel>
+                <div className="flex gap-2">
+                  <FormControl>
+                    <Input
+                      placeholder="https://soundcloud.com/..."
+                      {...field}
+                      onBlur={(e) => {
+                        field.onBlur();
+                        if (e.target.value && e.target.value.includes("soundcloud.com")) {
+                          fetchSoundCloudMeta(e.target.value);
+                        }
+                      }}
+                    />
+                  </FormControl>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="icon"
+                    disabled={isFetching || !field.value}
+                    onClick={() => fetchSoundCloudMeta(field.value)}
+                  >
+                    {isFetching ? (
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                    ) : (
+                      <Search className="h-4 w-4" />
+                    )}
+                  </Button>
+                </div>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
           <div className="grid grid-cols-2 gap-4">
             <FormField
               control={form.control}
@@ -105,7 +196,7 @@ const AddTrackForm = () => {
                 <FormItem>
                   <FormLabel>Артист</FormLabel>
                   <FormControl>
-                    <Input placeholder="PIGGY POP" {...field} />
+                    <Input placeholder="Автоматически из SC" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -119,27 +210,13 @@ const AddTrackForm = () => {
                 <FormItem>
                   <FormLabel>Название</FormLabel>
                   <FormControl>
-                    <Input placeholder="Track Name" {...field} />
+                    <Input placeholder="Автоматически из SC" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
           </div>
-
-          <FormField
-            control={form.control}
-            name="audio_source_url"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Ссылка на трек</FormLabel>
-                <FormControl>
-                  <Input placeholder="https://soundcloud.com/..." {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
 
           <div className="grid grid-cols-2 gap-4">
             <FormField
@@ -149,7 +226,7 @@ const AddTrackForm = () => {
                 <FormItem>
                   <FormLabel>Обложка (URL)</FormLabel>
                   <FormControl>
-                    <Input placeholder="https://..." {...field} />
+                    <Input placeholder="Автоматически из SC" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -163,36 +240,13 @@ const AddTrackForm = () => {
                 <FormItem>
                   <FormLabel>Длительность (сек)</FormLabel>
                   <FormControl>
-                    <Input type="number" placeholder="180" {...field} />
+                    <Input type="number" placeholder="Авто" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
           </div>
-
-          <FormField
-            control={form.control}
-            name="source_type"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Источник</FormLabel>
-                <Select onValueChange={field.onChange} defaultValue={field.value}>
-                  <FormControl>
-                    <SelectTrigger>
-                      <SelectValue />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    <SelectItem value="soundcloud">SoundCloud</SelectItem>
-                    <SelectItem value="youtube">YouTube</SelectItem>
-                    <SelectItem value="file">Файл</SelectItem>
-                  </SelectContent>
-                </Select>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
 
           <Button type="submit" className="w-full" disabled={addTrack.isPending}>
             {addTrack.isPending ? (

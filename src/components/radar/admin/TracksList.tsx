@@ -1,11 +1,12 @@
 import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { Play, Pause, Trash2, Radio, Loader2 } from "lucide-react";
+import { Play, Pause, Trash2, Radio, Loader2, Pencil } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
+import EditTrackForm from "./EditTrackForm";
 import type { Tables } from "@/integrations/supabase/types";
 
 type Track = Tables<"tracks">;
@@ -14,6 +15,7 @@ const TracksList = () => {
   const { toast } = useToast();
   const queryClient = useQueryClient();
   const [settingCurrent, setSettingCurrent] = useState<string | null>(null);
+  const [editingId, setEditingId] = useState<string | null>(null);
 
   const { data: tracks, isLoading } = useQuery({
     queryKey: ["admin-tracks"],
@@ -125,6 +127,16 @@ const TracksList = () => {
       {tracks.map((track) => {
         const isCurrent = radioState?.current_track_id === track.id;
 
+        if (editingId === track.id) {
+          return (
+            <EditTrackForm
+              key={track.id}
+              track={track}
+              onClose={() => setEditingId(null)}
+            />
+          );
+        }
+
         return (
           <div
             key={track.id}
@@ -187,6 +199,15 @@ const TracksList = () => {
                 ) : (
                   <Play className="h-4 w-4" />
                 )}
+              </Button>
+
+              {/* Edit */}
+              <Button
+                size="icon"
+                variant="outline"
+                onClick={() => setEditingId(track.id)}
+              >
+                <Pencil className="h-4 w-4" />
               </Button>
 
               {/* Delete */}
