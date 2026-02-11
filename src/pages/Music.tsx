@@ -78,29 +78,29 @@ const Music = () => {
   const handleCloseDrawer = () => {
     setIsDrawerOpen(false);
   };
-  return <div className="min-h-screen pb-24">
-      
-      <main className="pt-24">
-        <div className="container mx-auto px-6">
-          {/* Header */}
-          <motion.div initial={{
+  return <div className="min-h-screen">
+
+    <main className="pt-24 pb-24">
+      <div className="container mx-auto px-6">
+        {/* Header */}
+        <motion.div initial={{
           opacity: 0,
           y: 20
         }} animate={{
           opacity: 1,
           y: 0
         }} className="mb-12">
-            
-            <p className="text-muted-foreground mt-2 text-lg">Listen to your heart when he's calling for Piggy </p>
-          </motion.div>
 
-          {/* Albums Grid */}
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
-            {albums.map((album, index) => <AlbumCard key={album.id} album={album} onClick={() => handleAlbumClick(album)} index={index} />)}
-          </div>
+          <p className="text-muted-foreground mt-2 text-lg">Listen to your heart when he's calling for Piggy </p>
+        </motion.div>
 
-          {/* Streaming Services */}
-          <motion.div initial={{
+        {/* Albums Grid */}
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+          {albums.map((album, index) => <AlbumCard key={album.id} album={album} onClick={() => handleAlbumClick(album)} index={index} />)}
+        </div>
+
+        {/* Streaming Services */}
+        <motion.div initial={{
           opacity: 0,
           y: 20
         }} whileInView={{
@@ -109,35 +109,35 @@ const Music = () => {
         }} viewport={{
           once: true
         }} className="mt-16 text-center sticker-card p-8">
-            <h3 className="font-display text-2xl mb-6">Слушайте на стриминговых сервисах</h3>
-            <div className="flex flex-wrap justify-center gap-4">
-              {streamingServices.map((service, index) => {
+          <h3 className="font-display text-2xl mb-6">Слушайте на стриминговых сервисах</h3>
+          <div className="flex flex-wrap justify-center gap-4">
+            {streamingServices.map((service, index) => {
               const borderRadii = ['50% 45% 50% 45%', '45% 50% 45% 50%', '48% 52% 48% 52%', '52% 48% 52% 48%', '46% 54% 46% 54%', '54% 46% 54% 46%'];
               return <a key={service.name} href={service.href} target="_blank" rel="noopener noreferrer" className={`w-14 h-14 flex items-center justify-center bg-transparent transition-all duration-300 hover:scale-110 hover:text-white ${service.color}`} style={{
                 border: '2px solid hsl(var(--foreground) / 0.5)',
                 borderRadius: borderRadii[index % 6]
               }} title={service.name}>
-                    <service.icon size={26} />
-                  </a>;
+                <service.icon size={26} />
+              </a>;
             })}
-            </div>
-          </motion.div>
-        </div>
-      </main>
+          </div>
+        </motion.div>
+      </div>
+    </main>
 
-      {/* Album Drawer */}
-      <AlbumDrawer isOpen={isDrawerOpen} onClose={handleCloseDrawer} album={selectedAlbum} currentTrack={currentTrack} onTrackClick={handleTrackClick} likes={likesObject} onLike={addLike} />
+    {/* Album Drawer */}
+    <AlbumDrawer isOpen={isDrawerOpen} onClose={handleCloseDrawer} album={selectedAlbum} currentTrack={currentTrack} onTrackClick={handleTrackClick} likes={likesObject} onLike={addLike} />
 
-      {/* Player */}
-      {selectedAlbum && currentTrack && <MusicPlayer album={selectedAlbum} currentTrack={currentTrack} onTrackChange={track => {
+    {/* Player */}
+    {selectedAlbum && currentTrack && <MusicPlayer album={selectedAlbum} currentTrack={currentTrack} onTrackChange={track => {
       setCurrentTrack(track);
       setAutoPlay(true);
     }} autoPlay={autoPlay} />}
 
-      {/* Secret Arkanoid Game */}
-      <ArkanoidGame isOpen={showArkanoid} onClose={closeArkanoid} />
+    {/* Secret Arkanoid Game */}
+    <ArkanoidGame isOpen={showArkanoid} onClose={closeArkanoid} />
 
-      <Footer />
-    </div>;
+    <Footer />
+  </div>;
 };
 export default Music;
