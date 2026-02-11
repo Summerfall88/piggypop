@@ -3,7 +3,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { HashRouter, Routes, Route } from "react-router-dom";
 import Navigation from "./components/Navigation";
 import ScrollToTop from "./components/ScrollToTop";
 import Index from "./pages/Index";
@@ -29,20 +29,20 @@ const App = () => {
           <div className="grain-overlay" />
           <Toaster />
           <Sonner />
-          <BrowserRouter>
+          <HashRouter>
             <ScrollToTop />
             <Navigation onCartClick={() => setIsCartOpen(true)} />
             <Routes>
               <Route path="/" element={<Index />} />
               <Route path="/music" element={<Music />} />
-               <Route path="/radar" element={<Radar />} />
+              <Route path="/radar" element={<Radar />} />
               <Route path="/merch" element={<Merch />} />
               <Route path="/secret" element={<SecretMusic />} />
               <Route path="/radar-admin" element={<RadarAdmin />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
             <CartDrawer isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
-          </BrowserRouter>
+          </HashRouter>
         </TooltipProvider>
       </CartProvider>
     </QueryClientProvider>
