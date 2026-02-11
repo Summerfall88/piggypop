@@ -2,6 +2,7 @@ import { motion } from 'framer-motion';
 import { ShoppingCart, Store, Package, Truck } from 'lucide-react';
 import MerchCard from '@/components/MerchCard';
 import { merchItems } from '@/data/merch';
+import Footer from '@/components/Footer';
 
 // Marketplace icons - placeholders
 const marketplaces = [{
@@ -93,15 +94,7 @@ const Merch = () => {
         </div>
       </main>
 
-      {/* Footer */}
-      <footer className="py-8 border-t border-border">
-        <div className="container mx-auto px-6 text-center text-muted-foreground">
-          <p className="font-display text-xl">
-            PIGGY<span className="text-primary">POP</span>
-          </p>
-          <p className="text-sm mt-2">© 2024 All rights reserved. Go! Go! Piggy Pop!</p>
-        </div>
-      </footer>
+      <Footer />
     </div>;
 };
 export default Merch;

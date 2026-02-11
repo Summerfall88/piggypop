@@ -5,6 +5,7 @@ import AlbumCard from '@/components/AlbumCard';
 import MusicPlayer from '@/components/MusicPlayer';
 import { secretAlbums } from '@/data/albums/secret';
 import type { Track, Album } from '@/data/albums';
+import Footer from '@/components/Footer';
 const SecretMusic = () => {
   const [selectedAlbum, setSelectedAlbum] = useState<Album | null>(null);
   const [currentTrack, setCurrentTrack] = useState<Track | null>(null);
@@ -203,6 +204,8 @@ const SecretMusic = () => {
       setCurrentTrack(track);
       setAutoPlay(true);
     }} autoPlay={autoPlay} />}
+
+      <Footer />
     </div>;
 };
 export default SecretMusic;

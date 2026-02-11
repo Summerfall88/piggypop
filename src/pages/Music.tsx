@@ -7,6 +7,7 @@ import MusicPlayer from '@/components/MusicPlayer';
 import ArkanoidGame from '@/components/ArkanoidGame';
 import { albums, type Track, type Album } from '@/data/albums';
 import { useLikes } from '@/hooks/useLikes';
+import Footer from '@/components/Footer';
 
 // Streaming service icons - placeholder SVG icons
 const streamingServices = [{
@@ -135,6 +136,8 @@ const Music = () => {
 
       {/* Secret Arkanoid Game */}
       <ArkanoidGame isOpen={showArkanoid} onClose={closeArkanoid} />
+
+      <Footer />
     </div>;
 };
 export default Music;

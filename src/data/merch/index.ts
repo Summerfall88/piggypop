@@ -26,7 +26,7 @@ export const merchItems: MerchItem[] = [
     name: 'Piggy Pop Tee Black',
     price: 2990,
     description: 'Оверсайз футболка из 100% хлопка с принтом Piggy на спине. Плотность 240 г/м². Идеальна для концертов и повседневной носки.',
-    images: [tshirtBlack],
+    images: [tshirtBlack, tshirtBlack],
     sizes: ['S', 'M', 'L', 'XL', 'XXL'],
     sizeChart: [
       { size: 'S', chest: '108', length: '70' },
@@ -42,7 +42,7 @@ export const merchItems: MerchItem[] = [
     name: 'Piggy Pop Hoodie White',
     price: 5990,
     description: 'Тёплый худи с капюшоном и принтом злой свиньи. 80% хлопок, 20% полиэстер. Принты на рукавах.',
-    images: [hoodieWhite],
+    images: [hoodieWhite, hoodieWhite],
     sizes: ['S', 'M', 'L', 'XL'],
     sizeChart: [
       { size: 'S', chest: '116', length: '68' },
