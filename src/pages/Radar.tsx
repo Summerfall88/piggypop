@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import RadarPlayer from "@/components/radar/RadarPlayer";
 import SubmitDrawer from "@/components/radar/SubmitDrawer";
 import Disclaimer from "@/components/radar/Disclaimer";
+import Footer from "@/components/Footer";
 
 const Radar = () => {
   return (
@@ -51,6 +52,8 @@ const Radar = () => {
           <Disclaimer />
         </motion.div>
       </div>
+
+      <Footer />
     </main>
   );
 };
