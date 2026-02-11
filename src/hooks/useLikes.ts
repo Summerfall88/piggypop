@@ -7,6 +7,7 @@ interface LikesState {
 export const useLikes = () => {
   const [likes, setLikes] = useState<LikesState>({});
   const [showArkanoid, setShowArkanoid] = useState(false);
+  const [hasShownArkanoid, setHasShownArkanoid] = useState(false);
 
   const addLike = useCallback((trackId: string) => {
     setLikes(prev => {
@@ -19,14 +20,15 @@ export const useLikes = () => {
       // Track IDs are like "1-1", "1-2", "1-3" for first album
       const firstThreeTrackIds = ['1-1', '1-2', '1-3'];
       const allHaveSeven = firstThreeTrackIds.every(id => newLikes[id] === 7);
-      
-      if (allHaveSeven) {
+
+      if (allHaveSeven && !hasShownArkanoid) {
+        setHasShownArkanoid(true);
         setTimeout(() => setShowArkanoid(true), 300);
       }
 
       return newLikes;
     });
-  }, []);
+  }, [hasShownArkanoid]);
 
   const getLikes = useCallback((trackId: string) => {
     return likes[trackId] || 0;
