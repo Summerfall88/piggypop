@@ -108,7 +108,7 @@ const Music = () => {
           y: 0
         }} viewport={{
           once: true
-        }} className="mt-16 text-center sticker-card p-8">
+        }} className="mt-16 text-center p-8">
           <h3 className="font-display text-2xl mb-6">Слушайте на стриминговых сервисах</h3>
           <div className="flex flex-wrap justify-center gap-4">
             {streamingServices.map((service, index) => {
