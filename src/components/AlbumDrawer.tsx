@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Play, Clock, Disc, Heart } from 'lucide-react';
 import type { Album, Track } from '@/data/albums';
-import SvgSequenceAnimation from './SvgSequenceAnimation';
+import ostorozhnoGif from '@/assets/warning-animation/ostorozhno.gif';
 
 interface AlbumDrawerProps {
   isOpen: boolean;
@@ -61,8 +61,12 @@ const AlbumDrawer = ({
                 exit={{ opacity: 0, scale: 1.1 }}
                 className="fixed inset-0 flex items-center justify-center z-[60] pointer-events-none"
               >
-                <div className="bg-transparent backdrop-blur-md p-4 flex flex-col items-center justify-center">
-                  <SvgSequenceAnimation interval={60} />
+                <div className="bg-transparent p-4 flex flex-col items-center justify-center">
+                  <img
+                    src={ostorozhnoGif}
+                    alt="Volume Warning"
+                    className="w-[512px] h-[512px] object-contain"
+                  />
                 </div>
               </motion.div>
             )}
