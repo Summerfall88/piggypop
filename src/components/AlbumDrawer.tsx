@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Play, Clock, Disc, Heart, Volume2 } from 'lucide-react';
+import { X, Play, Clock, Disc, Heart } from 'lucide-react';
 import type { Album, Track } from '@/data/albums';
+import SvgSequenceAnimation from './SvgSequenceAnimation';
 
 interface AlbumDrawerProps {
   isOpen: boolean;
@@ -29,7 +30,7 @@ const AlbumDrawer = ({
       setShowWarning(true);
       const timer = setTimeout(() => {
         setShowWarning(false);
-      }, 3000);
+      }, 3500);
       return () => clearTimeout(timer);
     } else {
       setShowWarning(false);
@@ -55,16 +56,13 @@ const AlbumDrawer = ({
           <AnimatePresence>
             {showWarning && (
               <motion.div
-                initial={{ opacity: 0, scale: 0.9, y: 20 }}
-                animate={{ opacity: 1, scale: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.9, y: -20 }}
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 1.1 }}
                 className="fixed inset-0 flex items-center justify-center z-[60] pointer-events-none"
               >
-                <div className="bg-primary px-8 py-4 rounded-full shadow-2xl flex items-center gap-3 border-4 border-white">
-                  <Volume2 className="text-primary-foreground animate-pulse" size={32} />
-                  <span className="text-primary-foreground font-display text-xl md:text-2xl whitespace-nowrap">
-                    Осторожно! Сейчас будет громко!
-                  </span>
+                <div className="bg-transparent backdrop-blur-md p-4 flex flex-col items-center justify-center">
+                  <SvgSequenceAnimation interval={60} />
                 </div>
               </motion.div>
             )}
