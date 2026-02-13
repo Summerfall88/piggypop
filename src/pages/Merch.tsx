@@ -63,11 +63,11 @@ const Merch = () => {
           <div className="flex flex-wrap justify-center gap-4">
             {marketplaces.map((marketplace, index) => {
               const borderRadii = ['50% 45% 50% 45%', '45% 50% 45% 50%', '48% 52% 48% 52%', '52% 48% 52% 48%'];
-              return <a key={marketplace.name} href={marketplace.href} target="_blank" rel="noopener noreferrer" className={`w-14 h-14 flex items-center justify-center bg-transparent transition-all duration-300 hover:scale-110 hover:text-white ${marketplace.color}`} style={{
+              return <a key={marketplace.name} href={marketplace.href} target="_blank" rel="noopener noreferrer" className={`w-10 h-10 flex items-center justify-center bg-transparent transition-all duration-300 hover:scale-110 hover:text-white ${marketplace.color}`} style={{
                 border: '2px solid hsl(var(--foreground) / 0.5)',
                 borderRadius: borderRadii[index % 4]
               }} title={marketplace.name}>
-                <marketplace.icon size={26} />
+                <marketplace.icon size={18} />
               </a>;
             })}
           </div>

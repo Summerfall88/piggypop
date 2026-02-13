@@ -33,7 +33,6 @@ export const albums: Album[] = [
       { id: '1-1', title: 'GO! GO! PIGGY POP!', duration: '1:32', audioUrl: '/audio/bred.wav' },
       { id: '1-2', title: 'NEWREBORN', duration: '3:45', audioUrl: '/audio/Boot-Sequence.mp3' },
       { id: '1-3', title: 'STAY SHARP', duration: '4:12', audioUrl: '/audio/pss-126.wav' },
-      
     ],
   },
   {
@@ -43,12 +42,12 @@ export const albums: Album[] = [
     coverImage: album2Cover,
     description: 'Второй альбом с агрессивными электронными битами и неоновым звучанием.',
     tracks: [
-      { id: '2-1', title: 'Storm Warning', duration: '2:08' },
-      { id: '2-2', title: 'Neon Rage', duration: '3:52' },
-      { id: '2-3', title: 'Electric Heart', duration: '4:01' },
-      { id: '2-4', title: 'Voltage Drop', duration: '3:33' },
-      { id: '2-5', title: 'Thunder Kiss', duration: '3:45' },
-      { id: '2-6', title: 'Static Dream', duration: '4:20' },
+      { id: '2-1', title: 'Storm Warning', duration: '2:08', audioUrl: '/audio/Boot-Sequence.mp3' },
+      { id: '2-2', title: 'Neon Rage', duration: '3:52', audioUrl: '/audio/bred.wav' },
+      { id: '2-3', title: 'Electric Heart', duration: '4:01', audioUrl: '/audio/pss-126.wav' },
+      { id: '2-4', title: 'Voltage Drop', duration: '3:33', audioUrl: '/audio/Boot-Sequence.mp3' },
+      { id: '2-5', title: 'Thunder Kiss', duration: '3:45', audioUrl: '/audio/bred.wav' },
+      { id: '2-6', title: 'Static Dream', duration: '4:20', audioUrl: '/audio/pss-126.wav' },
     ],
   },
   {
@@ -59,11 +58,11 @@ export const albums: Album[] = [
     description: 'Футуристический альбом на стыке синтвейва и кибер-панка.',
     tracks: [
       { id: '3-1', title: 'Boot Sequence', duration: '1:45', audioUrl: '/audio/Boot-Sequence.mp3' },
-      { id: '3-2', title: 'Digital Oink', duration: '3:28' },
-      { id: '3-3', title: 'Neon Tokyo', duration: '4:15' },
-      { id: '3-4', title: 'Glitch in the System', duration: '3:56' },
-      { id: '3-5', title: 'Cyber Love', duration: '4:02' },
-      { id: '3-6', title: 'Shutdown', duration: '2:30' },
+      { id: '3-2', title: 'Digital Oink', duration: '3:28', audioUrl: '/audio/bred.wav' },
+      { id: '3-3', title: 'Neon Tokyo', duration: '4:15', audioUrl: '/audio/pss-126.wav' },
+      { id: '3-4', title: 'Glitch in the System', duration: '3:56', audioUrl: '/audio/Boot-Sequence.mp3' },
+      { id: '3-5', title: 'Cyber Love', duration: '4:02', audioUrl: '/audio/bred.wav' },
+      { id: '3-6', title: 'Shutdown', duration: '2:30', audioUrl: '/audio/pss-126.wav' },
     ],
   },
 ];

@@ -113,11 +113,11 @@ const Music = () => {
           <div className="flex flex-wrap justify-center gap-4">
             {streamingServices.map((service, index) => {
               const borderRadii = ['50% 45% 50% 45%', '45% 50% 45% 50%', '48% 52% 48% 52%', '52% 48% 52% 48%', '46% 54% 46% 54%', '54% 46% 54% 46%'];
-              return <a key={service.name} href={service.href} target="_blank" rel="noopener noreferrer" className={`w-14 h-14 flex items-center justify-center bg-transparent transition-all duration-300 hover:scale-110 hover:text-white ${service.color}`} style={{
+              return <a key={service.name} href={service.href} target="_blank" rel="noopener noreferrer" className={`w-10 h-10 flex items-center justify-center bg-transparent transition-all duration-300 hover:scale-110 hover:text-white ${service.color}`} style={{
                 border: '2px solid hsl(var(--foreground) / 0.5)',
                 borderRadius: borderRadii[index % 6]
               }} title={service.name}>
-                <service.icon size={26} />
+                <service.icon size={18} />
               </a>;
             })}
           </div>

@@ -27,7 +27,7 @@ const ArkanoidGame = ({ isOpen, onClose }: ArkanoidGameProps) => {
   const [won, setWon] = useState(false);
   const [showSecret, setShowSecret] = useState(false);
   const [gameSize, setGameSize] = useState({ width: 400, height: 500 });
-  
+
   const PADDLE_WIDTH = gameSize.width * 0.2;
   const BRICK_WIDTH = gameSize.width / BRICK_COLS - 4;
 
@@ -48,18 +48,18 @@ const ArkanoidGame = ({ isOpen, onClose }: ArkanoidGameProps) => {
       const maxWidth = Math.min(window.innerWidth - 32, 600);
       const maxHeight = Math.min(window.innerHeight - 200, 700);
       const aspectRatio = 0.8; // width/height
-      
+
       let width = maxWidth;
       let height = width / aspectRatio;
-      
+
       if (height > maxHeight) {
         height = maxHeight;
         width = height * aspectRatio;
       }
-      
+
       setGameSize({ width, height });
     };
-    
+
     updateSize();
     window.addEventListener('resize', updateSize);
     return () => window.removeEventListener('resize', updateSize);
@@ -99,7 +99,7 @@ const ArkanoidGame = ({ isOpen, onClose }: ArkanoidGameProps) => {
     setGameOver(false);
     setWon(false);
     setShowSecret(false);
-    
+
     // Force restart the game loop
     const canvas = canvasRef.current;
     if (canvas) {
@@ -143,7 +143,7 @@ const ArkanoidGame = ({ isOpen, onClose }: ArkanoidGameProps) => {
 
     const gameLoop = () => {
       if (!isRunning) return;
-      
+
       const state = gameStateRef.current;
       if (!state.gameRunning) return;
 
@@ -296,26 +296,28 @@ const ArkanoidGame = ({ isOpen, onClose }: ArkanoidGameProps) => {
                   ЗАКРЫТЬ [X]
                 </button>
               </div>
-              <canvas
-                ref={canvasRef}
-                width={gameSize.width}
-                height={gameSize.height}
-                className="border-2 border-white cursor-none w-full"
-                style={{ imageRendering: 'pixelated', maxWidth: gameSize.width }}
-              />
-              
-              {gameOver && !won && (
-                <div className="text-center mt-4">
-                  <p className="text-white font-mono text-xl mb-4">GAME OVER</p>
-                  <p className="text-white font-mono mb-4">Score: {score}</p>
-                  <button
-                    onClick={resetGame}
-                    className="px-6 py-2 bg-white text-black font-mono hover:bg-gray-200 transition-colors"
-                  >
-                    ЗАНОВО
-                  </button>
-                </div>
-              )}
+              <div className="relative w-full" style={{ maxWidth: gameSize.width }}>
+                <canvas
+                  ref={canvasRef}
+                  width={gameSize.width}
+                  height={gameSize.height}
+                  className="border-2 border-white cursor-none w-full block"
+                  style={{ imageRendering: 'pixelated' }}
+                />
+
+                {gameOver && !won && (
+                  <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/80 z-10">
+                    <p className="text-white font-mono text-3xl md:text-4xl mb-4 tracking-tighter">GAME OVER</p>
+                    <p className="text-white font-mono text-xl mb-6">SCORE: {score}</p>
+                    <button
+                      onClick={resetGame}
+                      className="px-8 py-3 bg-white text-black font-mono text-lg hover:bg-gray-200 transition-all active:scale-95"
+                    >
+                      ЗАНОВО
+                    </button>
+                  </div>
+                )}
+              </div>
 
               <p className="text-white/50 font-mono text-sm mt-2">
                 ДВИГАЙСЯ!
@@ -328,7 +330,7 @@ const ArkanoidGame = ({ isOpen, onClose }: ArkanoidGameProps) => {
               transition={{ duration: 0.5, type: 'spring' }}
               className="text-center"
             >
-              <h1 
+              <h1
                 className="font-mono text-[12rem] text-white leading-none"
                 style={{ textShadow: '0 0 50px white, 0 0 100px white' }}
               >
