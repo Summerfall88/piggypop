@@ -27,11 +27,6 @@ const streamingServices = [{
   icon: Headphones,
   color: 'hover:bg-pink-500'
 }, {
-  name: 'YouTube Music',
-  href: 'https://music.youtube.com',
-  icon: Play,
-  color: 'hover:bg-red-500'
-}, {
   name: 'VK Музыка',
   href: 'https://vk.com/music',
   icon: Radio,

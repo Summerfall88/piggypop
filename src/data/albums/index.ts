@@ -27,32 +27,33 @@ import bredAudio from '/audio/bred.wav';
 import bootSequenceAudio from '/audio/Boot-Sequence.mp3';
 import pss126Audio from '/audio/pss-126.wav';
 
+import ggppAudio from '/audio/GGPPGGPPGPGPGGG.wav';
+
+import ggpp1Audio from '/audio/GO! GO! PIGGY POP!.wav';
+import newrebornAudio from '/audio/NEWREBORN.wav';
+import staySharpAudio from '/audio/STAY SHARP.wav';
+
 export const albums: Album[] = [
   {
     id: 'go-go-piggy-pop-1',
     title: 'Go! Go! Piggy Pop! #1',
-    year: 2024,
+    year: 2025,
     coverImage: album1Cover,
     description: 'Дебютный альбом Piggy Pop с энергичными треками и безумными битами.',
     tracks: [
-      { id: '1-1', title: 'GO! GO! PIGGY POP!', duration: '1:32', audioUrl: bredAudio },
-      { id: '1-2', title: 'NEWREBORN', duration: '3:45', audioUrl: bootSequenceAudio },
-      { id: '1-3', title: 'STAY SHARP', duration: '4:12', audioUrl: pss126Audio },
+      { id: '1-1', title: 'GO! GO! PIGGY POP!', duration: '1:32', audioUrl: ggpp1Audio },
+      { id: '1-2', title: 'NEWREBORN', duration: '3:45', audioUrl: newrebornAudio },
+      { id: '1-3', title: 'STAY SHARP', duration: '4:12', audioUrl: staySharpAudio },
     ],
   },
   {
-    id: 'electronic-storm',
-    title: 'Electronic Storm',
+    id: 'ggpp-album',
+    title: 'GGPPGGPPGPGPGGG',
     year: 2025,
     coverImage: album2Cover,
     description: 'Второй альбом с агрессивными электронными битами и неоновым звучанием.',
     tracks: [
-      { id: '2-1', title: 'Storm Warning', duration: '2:08', audioUrl: bootSequenceAudio },
-      { id: '2-2', title: 'Neon Rage', duration: '3:52', audioUrl: bredAudio },
-      { id: '2-3', title: 'Electric Heart', duration: '4:01', audioUrl: pss126Audio },
-      { id: '2-4', title: 'Voltage Drop', duration: '3:33', audioUrl: bootSequenceAudio },
-      { id: '2-5', title: 'Thunder Kiss', duration: '3:45', audioUrl: bredAudio },
-      { id: '2-6', title: 'Static Dream', duration: '4:20', audioUrl: pss126Audio },
+      { id: '2-1', title: 'GGPPGGPPGPGPGGG', duration: '1:00', audioUrl: ggppAudio },
     ],
   },
   {
