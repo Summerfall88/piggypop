@@ -9,6 +9,12 @@ export const useLikes = () => {
   const [showArkanoid, setShowArkanoid] = useState(false);
   const [hasShownArkanoid, setHasShownArkanoid] = useState(false);
 
+  // Notification states for GGPPGGPPGPGPGGG track (id: 2-1)
+  const [showZachem, setShowZachem] = useState(false);
+  const [hasShownZachem, setHasShownZachem] = useState(false);
+  const [showPsix, setShowPsix] = useState(false);
+  const [hasShownPsix, setHasShownPsix] = useState(false);
+
   const addLike = useCallback((trackId: string) => {
     setLikes(prev => {
       const newLikes = {
@@ -26,9 +32,21 @@ export const useLikes = () => {
         setTimeout(() => setShowArkanoid(true), 300);
       }
 
+      // Check for 99 likes on GGPPGGPPGPGPGGG track (id: 2-1) → zachem.gif
+      if (newLikes['2-1'] === 99 && !hasShownZachem) {
+        setHasShownZachem(true);
+        setTimeout(() => setShowZachem(true), 300);
+      }
+
+      // Check for 666 likes on GGPPGGPPGPGPGGG track (id: 2-1) → psix.gif
+      if (newLikes['2-1'] === 666 && !hasShownPsix) {
+        setHasShownPsix(true);
+        setTimeout(() => setShowPsix(true), 300);
+      }
+
       return newLikes;
     });
-  }, [hasShownArkanoid]);
+  }, [hasShownArkanoid, hasShownZachem, hasShownPsix]);
 
   const getLikes = useCallback((trackId: string) => {
     return likes[trackId] || 0;
@@ -38,10 +56,22 @@ export const useLikes = () => {
     setShowArkanoid(false);
   }, []);
 
+  const closeZachem = useCallback(() => {
+    setShowZachem(false);
+  }, []);
+
+  const closePsix = useCallback(() => {
+    setShowPsix(false);
+  }, []);
+
   return {
     addLike,
     getLikes,
     showArkanoid,
     closeArkanoid,
+    showZachem,
+    closeZachem,
+    showPsix,
+    closePsix,
   };
 };

@@ -75,7 +75,11 @@ const Music = () => {
     addLike,
     getLikes,
     showArkanoid,
-    closeArkanoid
+    closeArkanoid,
+    showZachem,
+    closeZachem,
+    showPsix,
+    closePsix,
   } = useLikes();
 
   // Create likes object for drawer
@@ -150,7 +154,7 @@ const Music = () => {
     </main>
 
     {/* Album Drawer */}
-    <AlbumDrawer isOpen={isDrawerOpen} onClose={handleCloseDrawer} album={selectedAlbum} currentTrack={currentTrack} onTrackClick={handleTrackClick} likes={likesObject} onLike={addLike} />
+    <AlbumDrawer isOpen={isDrawerOpen} onClose={handleCloseDrawer} album={selectedAlbum} currentTrack={currentTrack} onTrackClick={handleTrackClick} likes={likesObject} onLike={addLike} showZachem={showZachem} closeZachem={closeZachem} showPsix={showPsix} closePsix={closePsix} />
 
     {/* Player */}
     {selectedAlbum && currentTrack && <MusicPlayer album={selectedAlbum} currentTrack={currentTrack} onTrackChange={track => {

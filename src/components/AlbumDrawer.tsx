@@ -3,6 +3,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { X, Play, Clock, Disc, Heart } from 'lucide-react';
 import type { Album, Track } from '@/data/albums';
 import ostorozhnoGif from '@/assets/warning-animation/ostorozhno.gif';
+import zachemGif from '@/assets/warning-animation/zachem.gif';
+import psixGif from '@/assets/warning-animation/psix.gif';
 
 interface AlbumDrawerProps {
   isOpen: boolean;
@@ -12,6 +14,10 @@ interface AlbumDrawerProps {
   onTrackClick: (track: Track) => void;
   likes: { [trackId: string]: number };
   onLike: (trackId: string) => void;
+  showZachem: boolean;
+  closeZachem: () => void;
+  showPsix: boolean;
+  closePsix: () => void;
 }
 
 const AlbumDrawer = ({
@@ -22,6 +28,10 @@ const AlbumDrawer = ({
   onTrackClick,
   likes,
   onLike,
+  showZachem,
+  closeZachem,
+  showPsix,
+  closePsix,
 }: AlbumDrawerProps) => {
   const [showWarning, setShowWarning] = useState(false);
 
@@ -65,6 +75,48 @@ const AlbumDrawer = ({
                   <img
                     src={ostorozhnoGif}
                     alt="Volume Warning"
+                    className="w-[512px] h-[512px] object-contain"
+                  />
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          {/* Zachem Notification Overlay (99 likes on GGPPGGPPGPGPGGG) */}
+          <AnimatePresence>
+            {showZachem && (
+              <motion.div
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 1.1 }}
+                className="fixed inset-0 flex items-center justify-center z-[60] pointer-events-auto cursor-pointer"
+                onClick={closeZachem}
+              >
+                <div className="bg-transparent p-4 flex flex-col items-center justify-center">
+                  <img
+                    src={zachemGif}
+                    alt="Zachem"
+                    className="w-[512px] h-[512px] object-contain"
+                  />
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          {/* Psix Notification Overlay (666 likes on GGPPGGPPGPGPGGG) */}
+          <AnimatePresence>
+            {showPsix && (
+              <motion.div
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 1.1 }}
+                className="fixed inset-0 flex items-center justify-center z-[60] pointer-events-auto cursor-pointer"
+                onClick={closePsix}
+              >
+                <div className="bg-transparent p-4 flex flex-col items-center justify-center">
+                  <img
+                    src={psixGif}
+                    alt="Psix"
                     className="w-[512px] h-[512px] object-contain"
                   />
                 </div>
